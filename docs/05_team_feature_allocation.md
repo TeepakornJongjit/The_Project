@@ -1,130 +1,91 @@
-# Team Feature Allocation
-## ระบบติดตามทุนการศึกษา
+# 05 — Team Feature Allocation
 
-โครงการแบ่งขอบเขตงานออกเป็น 6 Module เพื่อรองรับสมาชิกจำนวน 6 คน
+## 1. Team Members
 
-สมาชิกทั้ง 6 คนมีข้อมูลดังนี้ และสามารถเลือก Module ที่ต้องการรับผิดชอบได้ตามความเหมาะสม
+| # | ชื่อ | รหัสนักศึกษา | Email | Module ที่รับผิดชอบ |
+|---|---|---|---|---|
+| 1 | กิตยาภา วารี | 67112268 | kkpio.iuray@gmail.com | M01 — User & Student Management |
+| 2 | อัฑฒพร ให้เจริญสุข | 67124834 | moooomfilm@gmail.com | M02 — Scholarship Management |
+| 3 | ธีปกรณ์ จงจิตต์ | 67124875 | teepakorn.jong@gmail.com.wu.ac.th | M03 — Application & Document Management |
+| 4 | กฤษณะ ภิรมย์ | 67109116 | woqwri@gmail.com | M04 — Scholarship Review & Evaluation |
+| 5 | ปกรณ์ บุญคงมาก | 67110577 | boonkoingmak@gmail.com | M05 — Award & Follow-up Management |
+| 6 | อชิระ กาลสุวรรณ์ | 67111823 | ddphone8149@gmail.com | M06 — Dashboard, Report & Notification |
 
-## Team Members
-| ลำดับ | ชื่อ | นามสกุล | รหัสนักศึกษา | อีเมลทำโปรเจค | Module ที่เลือก |
-|---:|---|---|---|---|---|
-| 1 | กิตยาภา | วารี | 67112268 | kkpio.iuray@gmail.com | TBD |
-| 2 | อัฑฒพร | ให้เจริญสุข | 67124834 | moooomfilm@gmail.com | TBD |
-| 3 | ธีปกรณ์ | จงจิตต์ | 67124875 | teepakorn.jo@gmail.wu.ac.th | TBD |
-| 4 | กฤษณะ | ภิรมย์ | 67109116 | woqwri@gmail.com | TBD |
-| 5 | ปกรณ์ | บุญคงมาก | 67110577 | boonkoingmak@gmail.com | TBD |
-| 6 | อชิระ | กาลสุวรรณ์ | 67111823 | ddphone8149@gmail.com | TBD |
+## 2. Module Allocation
 
-## M01 — User & Student Management
-### ขอบเขต
-- User Account
-- Login / Logout
-- User Profile
-- Student Profile
-- Academic Information
-- Contact Information
-- Role
-- Permission
+### M01 — User & Student Management
+**ผู้รับผิดชอบ:** กิตยาภา วารี
 
-### เป้าหมาย
-จัดการข้อมูลพื้นฐานของผู้ใช้งานและนักศึกษา ซึ่งเป็นข้อมูลที่ Module อื่นสามารถนำไปใช้ต่อได้
+ขอบเขตหลัก:
+- จัดการข้อมูลผู้ใช้งาน
+- จัดการข้อมูลนักศึกษา
+- บทบาทและสิทธิ์การใช้งานในระดับที่จำเป็นต่อระบบ
+- ข้อมูลพื้นฐานที่ Module อื่นต้องใช้
 
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
+### M02 — Scholarship Management
+**ผู้รับผิดชอบ:** อัฑฒพร ให้เจริญสุข
 
-## M02 — Scholarship Management
-### ขอบเขต
-- Scholarship
-- Scholarship Announcement
-- Scholarship Criteria
-- Scholarship Conditions
-- Application Period
-- Scholarship Status
-- Search
-- Filter
+ขอบเขตหลัก:
+- จัดการข้อมูลทุนการศึกษา
+- สร้าง/แก้ไข/เปิด/ปิดประกาศทุน
+- จัดการเงื่อนไขและคุณสมบัติของทุน
+- จัดการช่วงเวลารับสมัคร
 
-### เป้าหมาย
-จัดการข้อมูลทุนตั้งแต่การสร้างทุนจนถึงการเปิดรับสมัคร
+### M03 — Application & Document Management
+**ผู้รับผิดชอบ:** ธีปกรณ์ จงจิตต์
 
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
+ขอบเขตหลัก:
+- การสมัครทุน
+- การบันทึกข้อมูลใบสมัคร
+- การส่งและจัดการเอกสารประกอบการสมัคร
+- สถานะใบสมัคร
+- การแก้ไข/ส่งใบสมัครตามกติกาของระบบ
 
-## M03 — Application & Document Management
-### ขอบเขต
-- Scholarship Application
-- Application Form
-- Application Document
-- Document Status
-- Submit Application
-- Edit Application
-- Application History
-- Application Status
+### M04 — Scholarship Review & Evaluation
+**ผู้รับผิดชอบ:** กฤษณะ ภิรมย์
 
-### เป้าหมาย
-จัดการกระบวนการสมัครทุนและเอกสารประกอบการสมัคร
+ขอบเขตหลัก:
+- ตรวจสอบคุณสมบัติและเอกสาร
+- การพิจารณาใบสมัคร
+- การประเมินตามเกณฑ์
+- บันทึกผลการประเมิน
+- สถานะการพิจารณา
 
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
+### M05 — Award & Follow-up Management
+**ผู้รับผิดชอบ:** ปกรณ์ บุญคงมาก
 
-## M04 — Scholarship Review & Evaluation
-### ขอบเขต
-- Application Review
-- Eligibility Check
-- Document Review
-- Applicant Screening
-- Committee Review
-- Evaluation
-- Score
-- Comment
-- Evaluation Result
+ขอบเขตหลัก:
+- จัดการผลการได้รับทุน
+- บันทึกข้อมูลผู้ได้รับทุน
+- ติดตามสถานะผู้ได้รับทุน
+- บันทึกข้อมูลการติดตามตามรอบ
+- จัดการสถานะสิทธิ์/ผลการติดตาม
 
-### เป้าหมาย
-จัดการกระบวนการตรวจสอบและพิจารณาผู้สมัคร
+### M06 — Dashboard, Report & Notification
+**ผู้รับผิดชอบ:** อชิระ กาลสุวรรณ์
 
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
+ขอบเขตหลัก:
+- Dashboard ภาพรวม
+- รายงานและสรุปข้อมูล
+- การแจ้งเตือนที่เกี่ยวข้องกับกระบวนการทุน
+- มุมมองข้อมูลสำหรับผู้ใช้งานแต่ละบทบาทตามที่กำหนด
 
-## M05 — Award & Follow-up Management
-### ขอบเขต
-- Scholarship Result
-- Award
-- Award Status
-- Award History
-- Follow-up
-- Follow-up Status
-- Post-award Conditions
-- Follow-up Result
+## 3. Allocation Rule
 
-### เป้าหมาย
-จัดการข้อมูลตั้งแต่ประกาศผลจนถึงการติดตามผู้ได้รับทุน
+1. สมาชิกแต่ละคนรับผิดชอบ Module หลักเพียง 1 Module
+2. การแบ่งงานใช้ขอบเขตตาม Module เป็นหลัก
+3. แต่ละ Module ต้องเชื่อมต่อกับ Module ที่เกี่ยวข้องตามลำดับกระบวนการของระบบ
+4. สมาชิกเจ้าของ Module มีหน้าที่ทำความเข้าใจ requirement และรายละเอียดของ Module ของตน
+5. งานที่มีผลกระทบข้าม Module ต้องตกลง interface และข้อมูลร่วมกันก่อนพัฒนา
+6. การจัดสรร Module ได้รับการยืนยันตามลำดับรายชื่อสมาชิก 1–6 ให้ตรงกับ M01–M06
 
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
+## 4. Team Allocation Summary
 
-## M06 — Dashboard, Report & Notification
-### ขอบเขต
-- Dashboard
-- Scholarship Statistics
-- Application Statistics
-- Award Statistics
-- Reports
-- Status Notification
-- Deadline Notification
-
-### เป้าหมาย
-สรุปข้อมูลจาก Module ต่าง ๆ และสนับสนุนการติดตามสถานะและเหตุการณ์สำคัญ
-
-**ผู้รับผิดชอบ:** `TBD — สมาชิกเลือกเอง`
-
-## Team Allocation
-| Member | ชื่อ-นามสกุล | Module | Status |
-|---|---|---|---|
-| Member 1 | กิตยาภา วารี | TBD | Available |
-| Member 2 | อัฑฒพร ให้เจริญสุข | TBD | Available |
-| Member 3 | ธีปกรณ์ จงจิตต์ | TBD | Available |
-| Member 4 | กฤษณะ ภิรมย์ | TBD | Available |
-| Member 5 | ปกรณ์ บุญคงมาก | TBD | Available |
-| Member 6 | อชิระ กาลสุวรรณ์ | TBD | Available |
-
-## Allocation Rule
-1. สมาชิกแต่ละคนเลือก Module หลัก 1 Module
-2. Module หนึ่งมีผู้รับผิดชอบหลัก 1 คน
-3. สามารถช่วยเหลือ Module อื่นได้
-4. การแบ่ง Module เป็นการแบ่งขอบเขตงาน
-5. การแบ่ง Module ไม่ได้หมายความว่า Source Code ต้องแยกตาม Module แบบเดียวกัน
-6. การกำหนด Module ของสมาชิกจะเปลี่ยนจาก `TBD` หลังจากทีมเลือกงานเสร็จแล้ว
+| สมาชิก | Module | สถานะ |
+|---|---|---|
+| กิตยาภา วารี | M01 | Assigned |
+| อัฑฒพร ให้เจริญสุข | M02 | Assigned |
+| ธีปกรณ์ จงจิตต์ | M03 | Assigned |
+| กฤษณะ ภิรมย์ | M04 | Assigned |
+| ปกรณ์ บุญคงมาก | M05 | Assigned |
+| อชิระ กาลสุวรรณ์ | M06 | Assigned |
