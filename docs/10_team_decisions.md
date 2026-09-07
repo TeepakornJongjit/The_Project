@@ -1,58 +1,62 @@
-# Team Decisions
-## ระบบติดตามทุนการศึกษา
+# 10 — Team Decisions
 
-เอกสารนี้ใช้บันทึกข้อตกลงและการตัดสินใจของสมาชิกในทีม
+## 1. Purpose
 
-## Team Members
-| ลำดับ | ชื่อ | นามสกุล | รหัสนักศึกษา | อีเมลทำโปรเจค |
-|---:|---|---|---|---|
-| 1 | กิตยาภา | วารี | 67112268 | kkpio.iuray@gmail.com |
-| 2 | อัฑฒพร | ให้เจริญสุข | 67124834 | moooomfilm@gmail.com |
-| 3 | ธีปกรณ์ | จงจิตต์ | 67124875 | teepakorn.jo@gmail.wu.ac.th |
-| 4 | กฤษณะ | ภิรมย์ | 67109116 | woqwri@gmail.com |
-| 5 | ปกรณ์ | บุญคงมาก | 67110577 | boonkoingmak@gmail.com |
-| 6 | อชิระ | กาลสุวรรณ์ | 67111823 | ddphone8149@gmail.com |
+เอกสารนี้ใช้บันทึกข้อตกลงสำคัญของทีมสำหรับโครงการระบบติดตามทุนการศึกษา เพื่อให้สมาชิกทุกคนทำงานบนขอบเขตและแนวทางเดียวกัน
 
-## Project Decisions
-| ID | ประเด็น | ข้อสรุป | สถานะ |
+## 2. Team Members
+
+| # | ชื่อ | รหัสนักศึกษา | Email |
 |---|---|---|---|
-| TD-01 | หัวข้อโครงการ | ระบบติดตามทุนการศึกษา | Confirmed |
-| TD-02 | จำนวนสมาชิก | 6 คน | Confirmed |
-| TD-03 | จำนวน Module | 6 Module | Confirmed |
-| TD-04 | การแบ่งงาน | แบ่งตาม Module | Confirmed |
-| TD-05 | ผู้รับผิดชอบ | สมาชิกเลือกเอง | Pending |
-| TD-06 | การเขียนโค้ดในเอกสารชุดนี้ | ยังไม่รวม | Confirmed |
-| TD-07 | Technology | ยังไม่กำหนด | Pending |
-| TD-08 | Database | ยังไม่กำหนด | Pending |
-| TD-09 | API | ยังไม่กำหนด | Pending |
+| 1 | กิตยาภา วารี | 67112268 | kkpio.iuray@gmail.com |
+| 2 | อัฑฒพร ให้เจริญสุข | 67124834 | moooomfilm@gmail.com |
+| 3 | ธีปกรณ์ จงจิตต์ | 67124875 | teepakorn.jong@gmail.com.wu.ac.th |
+| 4 | กฤษณะ ภิรมย์ | 67109116 | woqwri@gmail.com |
+| 5 | ปกรณ์ บุญคงมาก | 67110577 | boonkoingmak@gmail.com |
+| 6 | อชิระ กาลสุวรรณ์ | 67111823 | ddphone8149@gmail.com |
 
-## Team Allocation
-| Member | ชื่อ-นามสกุล | Selected Module | Status |
+## 3. Confirmed Decisions
+
+| ID | Decision | รายละเอียด | Status |
 |---|---|---|---|
-| Member 1 | กิตยาภา วารี | TBD | Pending |
-| Member 2 | อัฑฒพร ให้เจริญสุข | TBD | Pending |
-| Member 3 | ธีปกรณ์ จงจิตต์ | TBD | Pending |
-| Member 4 | กฤษณะ ภิรมย์ | TBD | Pending |
-| Member 5 | ปกรณ์ บุญคงมาก | TBD | Pending |
-| Member 6 | อชิระ กาลสุวรรณ์ | TBD | Pending |
+| TD-01 | Project scope | ระบบติดตามทุนการศึกษา ครอบคลุมตั้งแต่ประกาศทุน การสมัคร การตรวจสอบ การพิจารณา การประกาศผล และการติดตามผู้ได้รับทุน | Confirmed |
+| TD-02 | Documentation first | ช่วงปัจจุบันเน้นการกำหนด requirement, scope, module และแผนการพัฒนา ยังไม่เริ่มลงรายละเอียด implementation | Confirmed |
+| TD-03 | Module structure | ระบบแบ่งเป็น M01–M06 ตามขอบเขตงานหลักของระบบ | Confirmed |
+| TD-04 | Team size | ทีมมีสมาชิก 6 คน และแบ่ง Module หลักคนละ 1 Module | Confirmed |
+| TD-05 | Module ownership | กำหนดผู้รับผิดชอบตามลำดับสมาชิก 1–6 ให้ตรงกับ M01–M06 | Confirmed |
 
-## Decisions Pending
-- สมาชิกแต่ละคนเลือก Module ใด
-- Technology ที่ใช้
+## 4. Team Allocation
+
+| สมาชิก | Module | Status |
+|---|---|---|
+| กิตยาภา วารี | M01 — User & Student Management | Confirmed |
+| อัฑฒพร ให้เจริญสุข | M02 — Scholarship Management | Confirmed |
+| ธีปกรณ์ จงจิตต์ | M03 — Application & Document Management | Confirmed |
+| กฤษณะ ภิรมย์ | M04 — Scholarship Review & Evaluation | Confirmed |
+| ปกรณ์ บุญคงมาก | M05 — Award & Follow-up Management | Confirmed |
+| อชิระ กาลสุวรรณ์ | M06 — Dashboard, Report & Notification | Confirmed |
+
+## 5. Working Rules
+
+1. เจ้าของ Module ต้องเข้าใจ requirement และขอบเขตของ Module ที่ตนรับผิดชอบ
+2. งานที่เชื่อมโยงหลาย Module ต้องสื่อสารและตกลงข้อมูลร่วมกันก่อนพัฒนา
+3. การเปลี่ยนแปลง scope หรือกติกาหลักของระบบควรบันทึกไว้ในเอกสารนี้
+4. รายละเอียด Technology, Database, Architecture และ Interface จะกำหนดในขั้น System Design
+5. การแบ่ง Module ไม่ได้หมายความว่าแต่ละ Module ทำงานแยกขาดจากกัน แต่ต้องรองรับกระบวนการหลักร่วมกัน
+
+## 6. Decisions Pending
+
+รายการที่ยังต้องตัดสินใจในระยะถัดไป:
+- Technology / Framework
 - Database
 - Architecture
-- รูปแบบ Interface
-- วิธีการ Integration
-- Deployment
+- Interface / API
+- Integration strategy
+- Deployment / Infrastructure
 
-## Change Log
-การเปลี่ยนแปลงขอบเขตหรือ Feature สำคัญควรถูกบันทึกในตารางนี้
+## 7. Change Log
 
-| Date | Decision | Reason | Approved By |
+| วันที่ | รายการ | เหตุผล | ผู้ดำเนินการ |
 |---|---|---|---|
 | 2026-09-07 | เพิ่มข้อมูลสมาชิกทีมทั้ง 6 คนลงในเอกสารโครงการ | ใช้เป็นข้อมูลประกอบการแบ่ง Module และเชื่อมโยงการทำงานบน GitHub | Team |
-
-## Decision Principle
-การตัดสินใจที่มีผลต่อ Scope ของระบบควรได้รับการตกลงร่วมกันก่อนนำไปใช้
-
-หากมีการเพิ่ม Feature ใหม่ ควรตรวจสอบก่อนว่า Feature ดังกล่าวอยู่ในขอบเขตของระบบติดตามทุนการศึกษาหรือไม่
+| 2026-09-07 | กำหนดผู้รับผิดชอบ Module ตามลำดับสมาชิก 1–6 | สมาชิกยืนยันให้การแบ่งงานเป็นไปตามลำดับรายชื่อ โดยสมาชิก 1 รับ M01 และไล่ตามลำดับถึงสมาชิก 6 รับ M06 | Team |
