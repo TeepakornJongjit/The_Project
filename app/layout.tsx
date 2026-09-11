@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import AppLayout from "@/layouts/AppLayout";
+import AppLayout from "@/components/portal/Shell";
 import "./globals.css";
+import "./ui-v1.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "แดชบอร์ด | Campus Scholarship Portal",
+    default: "ระบบทุนการศึกษา | Campus Scholarship Portal",
     template: "%s | Campus Scholarship Portal",
   },
   description: "ระบบจัดการและติดตามทุนการศึกษาภายในมหาวิทยาลัย",
