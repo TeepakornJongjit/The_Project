@@ -80,14 +80,27 @@ npm run build
 
 ทดลองเปิดทุก URL โดยตรงและรีเฟรช ตรวจ active menu กับปุ่มย้อนกลับของเบราว์เซอร์ ทดสอบฟอร์มว่าง จำนวนเงินติดลบ โควตาทศนิยม ข้อมูลถูกต้อง และปุ่มล้างข้อมูล รวมถึงหน้าจอมือถือและการใช้คีย์บอร์ด
 
-## ส่งงานเข้า repo หลักผ่าน fork
+## การจัดการ branch
 
-สำหรับ checkout ปัจจุบัน `origin` คือ fork ของผู้พัฒนา และ `upstream` คือ `https://github.com/pakornbu-lang/coe-next.git` ตรวจด้วย `git remote -v`
+- `main` เป็น branch หลักสำหรับงานที่รวมแล้ว
+- สร้าง branch งานใหม่จาก `main` โดยใช้ `feature/<ชื่องาน>`, `fix/<ชื่อปัญหา>` หรือ `chore/<ชื่องาน>`
+- ส่งงานผ่าน Pull Request เข้า `main` และลบ branch งานหลังรวมสำเร็จ
+- ตรวจ `git status` ก่อนสลับ branch เพื่อไม่ให้มีงานค้างปะปน
+
+สำหรับ checkout นี้ `origin` คือ `https://github.com/pakornbu-lang/coe-next.git` ตรวจ remote ของเครื่องตนเองด้วย `git remote -v` ก่อนส่งงาน
+
+ตัวอย่างเริ่มงานใหม่เมื่อไม่มีงานค้าง:
 
 ```bash
-git fetch upstream
-git merge upstream/main
-git push -u origin feature/layouts
+git switch main
+git pull --ff-only origin main
+git switch -c feature/your-task
 ```
 
-เปิด Pull Request จาก `Kritsana29:feature/layouts` ไปที่ `pakornbu-lang/coe-next:main` เพื่อให้ทีมตรวจและรวมงาน ส่วนสมาชิกคนอื่นใช้ชื่อ branch ของตนเอง
+เมื่อทำงานและ commit เรียบร้อย ให้ส่ง branch ของตนเองแล้วเปิด Pull Request:
+
+```bash
+git push -u origin feature/your-task
+```
+
+หากทำงานผ่าน fork ให้ตั้ง `origin` เป็น fork ของตนเอง และเพิ่ม `upstream` ที่ชี้ไปยัง repository หลักก่อนซิงก์งาน
