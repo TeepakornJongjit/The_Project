@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function ConfirmationHelp(){return <section className="panel"><h1>ไม่สามารถเปิดลิงก์ยืนยันได้</h1><p>ลิงก์อาจหมดอายุ ถูกใช้แล้ว หรือเปิดจากเบราว์เซอร์คนละตัวกับที่สมัคร หากยืนยันอีเมลแล้ว คุณสามารถเข้าสู่ระบบด้วยอีเมลและรหัสผ่านได้</p><Link className="btn" href="/login">ไปหน้าเข้าสู่ระบบ</Link></section>;}

@@ -1,0 +1,1 @@
+export default function Loading(){return <p role="status">กำลังโหลดข้อมูลสำหรับผู้ดูแลระบบ…</p>;}
