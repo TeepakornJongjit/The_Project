@@ -1,75 +1,92 @@
-# ระบบติดตามทุนการศึกษา — เทมเพลต UI กลาง
+# ระบบติดตามทุนการศึกษา — UI กลางและระบบบัญชี
 
-ใช้ `pakornbu-lang/coe-next` เป็น repository หลัก และพัฒนาต่อบนโครง Next.js App Router + TypeScript + Tailwind CSS เดิมของทีม
+ใช้ `pakornbu-lang/coe-next` เป็น repository หลัก พัฒนาด้วย Next.js App Router + TypeScript ระบบบัญชีเชื่อม Supabase Auth แล้ว ส่วนทุน ใบสมัคร เอกสาร การประเมิน และจ่ายทุนยังเป็นหน้าตัวอย่าง
 
 ## เปิดโปรเจกต์
 
-เปิดโฟลเดอร์ `coe-next` ที่มี `package.json` และ `.git` อยู่ภายใน ก่อนรันคำสั่ง Git หรือ npm หากอยู่ในโฟลเดอร์ `pro331` ให้รัน `cd coe-next` ก่อน
+เปิดโฟลเดอร์ `coe-next` ที่มี `package.json` และ `.git` อยู่ภายใน ใช้ Node.js 22 ขึ้นไป
 
 ```bash
 npm ci
+```
+
+คัดลอก `.env.example` เป็น `.env.local` แล้วใส่ Project URL และ Publishable key ของ Supabase โปรเจกต์เดียวกับทีม (เครื่องที่ตั้งค่าแล้วไม่ต้องคัดลอกทับ) จากนั้น:
+
+```bash
 npm run dev
 ```
 
-เปิด http://localhost:3000 (หากพอร์ตไม่ว่าง ให้ดูพอร์ตที่ Terminal แสดง) บน Windows PowerShell สามารถใช้ `npm.cmd` แทน `npm` ได้
+เปิด [หน้าเข้าสู่ระบบ](http://localhost:3000/login) บน Windows PowerShell สามารถใช้ `npm.cmd` แทน `npm` ได้
 
-## หน้าตัวอย่าง
+ดู [คู่มือระบบบัญชีและสิทธิ์](docs/authentication.md) สำหรับการตั้งค่า สร้างบัญชี ขอบเขตระบบ และทดสอบ ห้ามอัปโหลดรหัสผ่าน `.env.local` หรือ Secret/Service role key ขึ้น Git
 
-| URL | หน้าที่ |
+## หน้าเว็บและสิทธิ์
+
+| URL | หน้าที่ / สิทธิ์ |
 | --- | --- |
-| `/` | แดชบอร์ด พร้อมสถิติจำลองและทางลัด |
-| `/scholarships/new` | ฟอร์มสร้างทุนและแสดงตัวอย่างประกาศ |
-| `/menu` | เมนูหน้าที่ใช้งานได้และส่วนงานที่จะพัฒนาต่อ |
-| `/about` | ข้อมูลระบบและขอบเขตหน้าตัวอย่าง |
+| `/` | หน้าแรกสาธารณะ |
+| `/login` | เข้าสู่ระบบจริงด้วยอีเมลและรหัสผ่าน |
+| `/register` | ข้อมูลการขอเปิดบัญชีผ่านผู้ดูแล |
+| `/scholarships` | รายการทุนตัวอย่างสาธารณะ |
+| `/dashboard`, `/profile`, `/applications`, `/apply` | นักศึกษา |
+| `/staff`, `/staff/scholarships`, `/staff/review`, `/scholarships/new` | เจ้าหน้าที่ทุน |
+| `/committee`, `/staff/evaluation` | กรรมการ |
+| `/account` | ข้อมูลจริงของบัญชีที่เข้าสู่ระบบ |
+| `/menu` | ส่งกลับหน้าหลักตามบทบาท |
+| `/about` | ข้อมูลระบบ |
+| `/access-denied` | แจ้งเมื่อไม่มีสิทธิ์เปิดหน้า |
 
-ฟอร์มตรวจช่องบังคับ จำนวนเงินมากกว่า 0 และโควตาจำนวนเต็มตั้งแต่ 1 ขึ้นไป การกดดูตัวอย่างยังไม่บันทึกลงฐานข้อมูล ข้อมูลในฟอร์มจะหายเมื่อรีเฟรชหรือออกจากหน้า แดชบอร์ดไม่อัปเดตตามฟอร์มเพราะยังเป็นข้อมูลจำลอง
+ผู้ดูแลกำหนดชื่อ รหัสนักศึกษา บทบาท และสถานะบัญชีใน `portal_profiles` ส่วนรหัสผ่านจัดการโดย Supabase Auth ผู้ใช้ไม่สามารถแก้บทบาทของตัวเองผ่านเว็บหรือ Data API
+
+การกดบันทึกในฟอร์มทุน/โปรไฟล์เพิ่มเติม/ใบสมัคร/ประเมินยังไม่บันทึกลงฐานข้อมูล ตัวเลขและเอกสารตัวอย่างไม่ใช่ประวัติของบัญชีที่ล็อกอิน
 
 ## โครงสร้างส่วนกลาง
 
 ```text
 app/
-  layout.tsx                 # ครอบทุกหน้าด้วย AppLayout เพียงครั้งเดียว
-  globals.css                # สี ฟอนต์ ระยะห่าง และคลาส portal-* ที่ใช้ร่วมกัน
-  page.tsx                   # แดชบอร์ด
-  scholarships/new/page.tsx  # หน้าฟอร์มสร้างทุน
-  menu/page.tsx
-  about/page.tsx
-layouts/AppLayout.tsx        # Header, Navbar, main และ footer
+  layout.tsx                 # อ่านบัญชีที่ยืนยันแล้วและครอบด้วย Shell
+  [...screen]/page.tsx        # หน้าทุน/นักศึกษา/เจ้าหน้าที่พร้อมตรวจสิทธิ์
+  actions/auth.ts            # เข้าสู่ระบบและออกจากระบบฝั่งเซิร์ฟเวอร์
+  account/page.tsx           # ข้อมูลบัญชีจริง
+  committee/page.tsx         # พื้นที่กรรมการ
+  access-denied/page.tsx
+  globals.css
+  ui-v1.css                  # หน้าตา portal ปัจจุบัน
 components/
-  Navbar.tsx                 # Link และสถานะเมนูตาม URL ปัจจุบัน
-  ui/                        # Card, Button และ PageHeader
-  scholarships/ScholarshipForm.tsx
+  auth/                     # ฟอร์มล็อกอินและปุ่มออกจากระบบ
+  portal/Shell.tsx           # Header, Navbar ตามบัญชี, main และ footer
+  portal/                   # หน้าจอโมดูลต่าง ๆ
+  ui/                       # ส่วนประกอบ UI ที่ใช้ซ้ำ
 lib/
-  navigation.ts              # รายการเมนูส่วนกลาง
-  demo-data.ts               # ข้อมูลแดชบอร์ดจำลอง
+  auth/                     # Viewer, role และการตรวจสิทธิ์บนเซิร์ฟเวอร์
+  supabase/                 # Supabase client ฝั่งเซิร์ฟเวอร์
+  ui-data.ts                # ข้อมูลทุนและใบสมัครตัวอย่าง
+proxy.ts                    # ต่ออายุคุกกี้และกำหนด cache header
+supabase/migrations/        # สคีมา portal_profiles และ RLS
+scripts/check-auth.mjs     # ตรวจสิทธิ์กับระบบจริง
 ```
+
+`layouts/AppLayout.tsx`, `components/Navbar.tsx`, `lib/navigation.ts` เป็นส่วนของเทมเพลตรุ่นก่อน เมนูที่ใช้อยู่ตอนนี้อยู่ใน `components/portal/Shell.tsx`
 
 ## เพิ่มหน้าของสมาชิกในทีม
 
-สร้าง `app/<ชื่อโมดูล>/page.tsx` โดยไม่ต้องครอบ AppLayout ซ้ำ เช่น:
+สร้าง `app/<ชื่อโมดูล>/page.tsx` โดยไม่ต้องครอบ Shell ซ้ำ หน้าที่ต้องใช้บัญชีให้ตรวจสิทธิ์ก่อนคืนเนื้อหา เช่น:
 
 ```tsx
-import Card from "@/components/ui/Card";
-import PageHeader from "@/components/ui/PageHeader";
+import { requireRole } from "@/lib/auth/server";
 
-export default function ApplicationsPage() {
-  return (
-    <div className="portal-page-stack">
-      <PageHeader title="ใบสมัครทุน" description="จัดการและติดตามใบสมัครทุนการศึกษา" />
-      <Card>เนื้อหาของโมดูล</Card>
-    </div>
-  );
+export default async function ApplicationsPage() {
+  const viewer = await requireRole(["student"]);
+  return <section className="panel">ใบสมัครของ {viewer.fullName}</section>;
 }
 ```
 
-- เพิ่มเมนูที่ `lib/navigation.ts` เมื่อหน้าเป้าหมายมีอยู่จริง
-- ใช้ `next/link` สำหรับเปลี่ยนหน้า และ `Button` สำหรับการกระทำในหน้า
-- หน้าที่ใช้ state หรือ event handlers ให้แยกเป็น Client Component และใส่ `"use client"` เฉพาะส่วนที่ต้องโต้ตอบ
-- ใช้ CSS variables ใน `app/globals.css` ร่วมกับ Tailwind หรือ CSS Modules ของแต่ละโมดูล ชื่อ `portal-*` สงวนให้ส่วนกลาง
-- ฟิลด์ใช้ `portal-field` และต้องมี label ที่เชื่อมกับ id ของ input
-- ป้ายบทบาทใน header เป็นข้อความตัวอย่าง ยังไม่ใช่ระบบตรวจสิทธิ์
-- ยังไม่รวม API, Auth, ฐานข้อมูล หรือการบันทึกไฟล์จริง ให้เชื่อมภายหลังตามโมดูล
-- อ่าน `AGENTS.md` และเอกสาร Next.js ที่ติดตั้งใน `node_modules/next/dist/docs/` ก่อนพัฒนา
+- เพิ่มเมนูตามบทบาทที่ `components/portal/Shell.tsx` หลังจากมีหน้าเป้าหมายแล้ว
+- ใช้ `next/link` สำหรับเปลี่ยนหน้า
+- แยกส่วนที่ใช้ state/event handlers เป็น Client Component
+- ทุก Server Action และ Route Handler ต้องตรวจสิทธิ์และเจ้าของข้อมูลซ้ำ ไม่เชื่อ role/user ID จากฟอร์มหรือ URL
+- ตารางใหม่ต้องมี RLS ของโมดูลนั้น การซ่อนเมนูหรือป้องกันหน้าเว็บอย่างเดียวไม่คุ้มครอง Data API
+- อ่าน `AGENTS.md` และเอกสาร Next.js ที่ติดตั้งก่อนพัฒนา
 
 ## ตรวจงานก่อนส่ง
 
@@ -78,7 +95,7 @@ npm run lint
 npm run build
 ```
 
-ทดลองเปิดทุก URL โดยตรงและรีเฟรช ตรวจ active menu กับปุ่มย้อนกลับของเบราว์เซอร์ ทดสอบฟอร์มว่าง จำนวนเงินติดลบ โควตาทศนิยม ข้อมูลถูกต้อง และปุ่มล้างข้อมูล รวมถึงหน้าจอมือถือและการใช้คีย์บอร์ด
+ทดสอบล็อกอินทั้งสามบทบาท รหัสผ่านผิด รีเฟรช เปิด URL ที่ไม่มีสิทธิ์ และออกจากระบบ คู่มือการรันทดสอบฐานข้อมูลและเส้นทางอยู่ใน [docs/authentication.md](docs/authentication.md)
 
 ## การจัดการ branch
 

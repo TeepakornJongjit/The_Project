@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import AppLayout from "@/components/portal/Shell";
+import { getViewer } from "@/lib/auth/server";
 import "./globals.css";
 import "./ui-v1.css";
 
@@ -12,11 +13,12 @@ export const metadata: Metadata = {
   description: "ระบบจัดการและติดตามทุนการศึกษาภายในมหาวิทยาลัย",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const viewer = await getViewer();
   return (
     <html lang="th">
       <body>
-        <AppLayout>{children}</AppLayout>
+        <AppLayout key={viewer?.id ?? "guest"} viewer={viewer}>{children}</AppLayout>
       </body>
     </html>
   );

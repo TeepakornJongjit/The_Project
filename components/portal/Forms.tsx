@@ -1,6 +1,7 @@
 "use client";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { scholarships, money } from "@/lib/ui-data";
+import type { Viewer } from "@/lib/auth/types";
 import {
   Action,
   Badge,
@@ -128,8 +129,12 @@ const profileInitial: Record<string, string> = {
   ชื่อบัญชี: "น.ส.ณัฐธิดา ใจดี",
   ประเภทบัญชี: "ออมทรัพย์",
 };
-export function Profile() {
-  const [data, setData] = useState(profileInitial),
+export function Profile({ viewer }: { viewer: Viewer }) {
+  const [data, setData] = useState<Record<string, string>>(() => ({
+    ...Object.fromEntries(Object.keys(profileInitial).map((key) => [key, ""])),
+    "ชื่อ–นามสกุล": viewer.fullName,
+    อีเมล: viewer.email,
+  })),
     [edit, setEdit] = useState(false),
     [message, setMessage] = useState(""),
     [upload, setUpload] = useState(false),
@@ -170,10 +175,10 @@ export function Profile() {
       <div className="columns">
         <Panel>
           <div className="profile-summary">
-            <span className="avatar large" />
+            <span className="account-avatar large" aria-hidden="true"><Icon name="user" /></span>
             <div>
-              <h1>{data["ชื่อ–นามสกุล"]}</h1>
-              <p>รหัสนักศึกษา 661234567</p>
+              <h1>{viewer.fullName}</h1>
+              <p>รหัสนักศึกษา {viewer.studentId}</p>
               <Badge>นักศึกษาปัจจุบัน</Badge>
               <p>
                 {data["คณะ"]}　{data["สาขาวิชา"]}　{data["ชั้นปี"]}
@@ -409,15 +414,20 @@ const formSteps = [
 ];
 export function ApplyForm({
   scholarshipId = "academic",
+  viewer,
 }: {
   scholarshipId?: string;
+  viewer: Viewer;
 }) {
   const item =
     scholarships.find((s) => s.id === scholarshipId) || scholarships[0];
   const [step, setStep] = useState(0),
-    [values, setValues] = useState<Record<string, string>>(() =>
-      Object.fromEntries(formSteps.flat().map(([, k, v]) => [k, v])),
-    ),
+    [values, setValues] = useState<Record<string, string>>(() => ({
+      ...Object.fromEntries(formSteps.flat().map(([, key]) => [key, ""])),
+      name: viewer.fullName,
+      studentId: viewer.studentId,
+      email: viewer.email,
+    })),
     [message, setMessage] = useState(""),
     [count, setCount] = useState(0),
     [submitted, setSubmitted] = useState(false),
