@@ -1,0 +1,196 @@
+:root {
+    --primary: #357a58;
+    --primary-soft: #e7f3ec;
+    --heading: #14215e;
+    --text: #526079;
+    --background: #f4f8f6;
+    --surface: #ffffff;
+    --border: #e3e9ee;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Tahoma, sans-serif;
+    color: var(--text);
+    background: var(--background);
+    line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.app-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-content {
+    max-width: 1440px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.brand strong {
+    display: block;
+    color: var(--heading);
+    line-height: 1.3;
+}
+
+.brand small {
+    font-size: 11px;
+}
+
+.app-navigation {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nav-button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background: transparent;
+    color: var(--heading);
+}
+
+.nav-button:hover,
+.nav-button.active {
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+
+.account-label {
+    margin-left: auto;
+    font-size: 13px;
+}
+
+.page-container {
+    max-width: 1440px;
+    margin: auto;
+    padding: 24px;
+}
+
+.welcome-banner {
+    padding: 32px;
+    border-radius: 16px;
+    background: linear-gradient(110deg, #e0f1e6, #edf5fc);
+}
+
+.welcome-banner h1 {
+    margin: 0 0 8px;
+    color: var(--heading);
+    font-size: clamp(24px, 3vw, 36px);
+}
+
+.welcome-banner p {
+    margin: 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-block: 24px;
+}
+
+.card {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.stat-value {
+    display: block;
+    margin-top: 8px;
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--heading);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: var(--heading);
+}
+
+.primary-button {
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background: #286044;
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .app-navigation {
+        order: 3;
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .header-content,
+    .page-container {
+        padding: 16px;
+    }
+
+    .welcome-banner {
+        padding: 24px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .account-label {
+        margin-left: 0;
+    }
+}
