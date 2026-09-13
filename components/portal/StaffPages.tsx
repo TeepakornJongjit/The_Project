@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { documents, people, scholarships, statuses } from "@/lib/ui-data";
+import type { Viewer } from "@/lib/auth/types";
 import {
   Action,
   Badge,
@@ -17,10 +18,10 @@ import {
 } from "./Shared";
 import { FilePicker } from "./Forms";
 
-export function StaffDashboard() {
+export function StaffDashboard({ viewer }: { viewer: Viewer }) {
   return (
     <>
-      <Banner staff />
+      <Banner staff title={viewer.fullName} />
       <Stats staff />
       <div className="columns">
         <div className="stack">
@@ -72,9 +73,7 @@ export function StaffDashboard() {
                   href={
                     i === 0
                       ? "/staff/review"
-                      : i === 1
-                        ? "/staff/evaluation"
-                        : "/staff/scholarships#results"
+                      : "/staff/scholarships#results"
                   }
                   key={x}
                 >
@@ -710,7 +709,7 @@ export function Evaluation() {
         title="ประเมินทุนการศึกษา"
         description="พิจารณาและให้คะแนนใบสมัครตามเกณฑ์ที่กำหนด"
       >
-        <Action href="/staff" secondary>
+        <Action href="/committee" secondary>
           ← กลับไปหน้ารายการ
         </Action>
       </Heading>

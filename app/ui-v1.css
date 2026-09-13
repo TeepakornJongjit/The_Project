@@ -2448,3 +2448,28 @@ body {
     min-width: 120px;
   }
 }
+:root .account-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-soft, #e7f3ec);
+  color: var(--primary, #23765e);
+  flex-shrink: 0;
+}
+.account-avatar.large { width: 80px; height: 80px; }
+.module-preview-notice {
+  padding: 12px 16px;
+  margin: 0 0 24px;
+  background: #eef6fc;
+  color: #27506a;
+  border: 1px solid #c9dfea;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.account-details { display: grid; grid-template-columns: auto 1fr; gap: 12px 24px; margin: 24px 0; }
+.account-details dt { font-weight: 700; }
+.account-details dd { margin: 0; overflow-wrap: anywhere; }
+.popover form { padding: 8px 0; }

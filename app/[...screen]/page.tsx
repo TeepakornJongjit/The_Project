@@ -1,5 +1,7 @@
-import { notFound } from "next/navigation";
-import { AuthPage } from "@/components/portal/PublicPages";
+import { notFound, redirect } from "next/navigation";
+import AuthPage from "@/components/auth/LoginPage";
+import { getViewer, requireRole } from "@/lib/auth/server";
+import { homeForRole } from "@/lib/auth/types";
 import {
   Applications,
   Dashboard,
@@ -26,13 +28,22 @@ export async function generateMetadata({ params }: Props) {
 }
 export default async function Page({ params, searchParams }: Props) {
   const path = (await params).screen.join("/");
+  if (path === "login" || path === "register") {
+    const viewer = await getViewer();
+    if (viewer) redirect(homeForRole(viewer.role));
+  }
+  const studentPages = ["dashboard", "profile", "applications", "apply"];
+  const student = studentPages.includes(path) ? await requireRole(["student"]) : null;
+  const staff = ["staff", "staff/scholarships", "staff/review"].includes(path)
+    ? await requireRole(["staff"]) : null;
+  if (path === "staff/evaluation") await requireRole(["committee"]);
   if (path === "register") return <AuthPage register />;
   if (path === "login") return <AuthPage />;
-  if (path === "dashboard") return <Dashboard />;
-  if (path === "profile") return <Profile />;
+  if (path === "dashboard" && student) return <Dashboard viewer={student} />;
+  if (path === "profile" && student) return <Profile key={student.id} viewer={student} />;
   if (path === "scholarships") return <SearchPage />;
   if (path === "applications") return <Applications />;
-  if (path === "staff") return <StaffDashboard />;
+  if (path === "staff" && staff) return <StaffDashboard viewer={staff} />;
   if (path === "staff/scholarships") return <ManageScholarships />;
   if (path === "staff/evaluation") return <Evaluation />;
   if (path === "staff/review") {
@@ -42,10 +53,12 @@ export default async function Page({ params, searchParams }: Props) {
       <Review applicant={Number.isInteger(n) && n >= 0 && n < 6 ? n : 0} />
     );
   }
-  if (path === "apply") {
+  if (path === "apply" && student) {
     const query = await searchParams;
     return (
       <ApplyForm
+        key={student.id}
+        viewer={student}
         scholarshipId={
           typeof query.scholarship === "string" ? query.scholarship : "academic"
         }

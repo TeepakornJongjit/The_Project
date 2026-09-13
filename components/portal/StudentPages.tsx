@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import type { Viewer } from "@/lib/auth/types";
 import { scholarships, type Scholarship, money, demoDate } from "@/lib/ui-data";
 import {
   Action,
@@ -18,10 +19,10 @@ import {
   Timeline,
 } from "./Shared";
 
-export function Dashboard() {
+export function Dashboard({ viewer }: { viewer: Viewer }) {
   return (
     <>
-      <Banner />
+      <Banner title={viewer.fullName} />
       <Stats />
       <div className="columns">
         <div className="stack">
