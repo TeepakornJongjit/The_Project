@@ -1,62 +1,67 @@
-# ระบบบัญชีและสิทธิ์
+# บัญชีสมาชิกและ Admin
 
-ใช้ Supabase Auth สำหรับอีเมล/รหัสผ่าน และตาราง `public.portal_profiles` สำหรับชื่อ รหัสนักศึกษา บทบาท และสถานะเปิดใช้งาน ไม่มีรหัสผ่านหรือคีย์ผู้ดูแลอยู่ในซอร์สโค้ด
+ระบบใช้ Supabase Auth เก็บรหัสผ่าน และ portal_profiles เก็บชื่อ รหัส อีเมล บทบาท และสถานะ ไม่มี Secret/Service role key ในแอป
 
-## เริ่มใช้งานบนเครื่องของสมาชิกทีม
+## เริ่มใช้งาน
+1. npm ci
+2. คัดลอก .env.example เป็น .env.local และใส่ Supabase URL / Publishable key ของทีม
+3. ตั้ง NEXT_PUBLIC_SITE_URL=http://localhost:3000 (บนโฮสต์จริงใช้ HTTPS URL ของเว็บ)
+4. npm run dev แล้วเปิด /login หรือ /register
 
-1. ติดตั้ง Node.js 22 ขึ้นไป แล้วรัน `npm ci` ในโฟลเดอร์ `coe-next`
-2. คัดลอก `.env.example` เป็น `.env.local`
-3. ใส่ Project URL และ Publishable key ของ Supabase โปรเจกต์เดียวกับทีม ขอค่าจากผู้ดูแลหรือหน้า Connect ใน Supabase ไม่ใช้ Secret key หรือ Service role key
-4. รัน `npm run dev` แล้วเปิด `http://localhost:3000/login`
-5. เข้าสู่ระบบด้วยอีเมลและรหัสผ่านที่ผู้ดูแลสร้างให้ ข้อมูลใน `.env.local` ไม่ถูกอัปขึ้น Git
+## สมัครนักศึกษา
+/register ส่งชื่อ รหัสนักศึกษา 8–12 หลัก อีเมล @mail.wu.ac.th หรือ @wu.ac.th และรหัสผ่านไป Supabase Auth
+Trigger บน auth.users สร้าง portal_profiles ด้วย role=student เสมอ แม้ผู้เรียกปลอม role ใน metadata
+ข้อมูลอีเมลเปลี่ยนตาม Auth เท่านั้น ส่วนชื่อ/รหัสแก้ไขจากหน้า Admin พร้อมเหตุผล
 
-หากเปลี่ยนค่า environment ให้เริ่ม dev server ใหม่ โฮสต์จริงต้องตั้งสองตัวแปรนี้ในระบบ environment ของโฮสต์และใช้ HTTPS
+การยืนยันอีเมลคงตามการตั้งค่า Supabase โปรเจกต์ โค้ดรองรับการยืนยันแบบ PKCE ผ่าน /auth/callback โดยไม่แก้ default email template
+ต้องเพิ่ม URL เต็มของ /auth/callback ใน Supabase Authentication > URL Configuration > Redirect URLs
+เปิดลิงก์ในเบราว์เซอร์เดียวกับที่สมัคร หากยืนยันแล้วแต่คุกกี้เดิมหาย ให้เข้าสู่ระบบด้วยรหัสผ่าน
 
-## ขอบเขตของงานนี้
+**ข้อจำกัดปัจจุบัน:** โปรเจกต์ยังไม่ตั้ง Custom SMTP ต้องตั้งผู้ให้บริการส่งอีเมลก่อนเปิดสมัครให้ผู้ใช้ทั่วไป Default SMTP จำกัดผู้รับและจำนวนอีเมล ไม่ถือว่าการส่งอีเมลยืนยันจริงผ่านการทดสอบแล้ว
+ไม่ปิดการยืนยันอีเมลเพื่อหลีกเลี่ยงข้อจำกัดนี้ และยังไม่ได้ทำระบบลืมรหัสผ่าน
 
-ทำงานจริง: การเข้าสู่ระบบ ออกจากระบบ เซสชัน ชื่อ/รหัส/อีเมลของบัญชี และสิทธิ์เข้าหน้าเว็บ
+## Admin
+- /admin: ค้นหา/กรอง/แบ่งหน้าสมาชิก แก้ชื่อและรหัส กำหนดบทบาทและอนุมัติในครั้งเดียว เปิด/ระงับบัญชี
+- /admin/reference: เพิ่ม/แก้ไข/ปิดรายการประเภททุน คณะ และสาขาวิชา
+- /admin/audit: ผู้ทำรายการ เวลา เหตุผล ค่าก่อนและหลัง พร้อมแบ่งหน้า
 
-ยังเป็นตัวอย่าง: ทุน ใบสมัคร การเก็บข้อมูลโปรไฟล์เพิ่มเติม การอัปโหลดเอกสาร การให้คะแนน การแจ้งเตือน และการจ่ายทุน ข้อมูลตัวอย่างไม่ใช่ประวัติของบัญชีที่เข้าสู่ระบบ การกดบันทึกในโมดูลเหล่านี้ยังไม่ได้บันทึกเข้าฐานข้อมูล
+Student = student, Officer = staff (ชื่อภายในเดิม), Committee = committee, Admin = admin
+เลือก Student / Officer / Committee แล้วกดบันทึกและอนุมัติครั้งเดียว การเปลี่ยน role และ audit เกิดใน transaction เดียว ไม่มีการรออนุมัติรอบสอง บัญชีเดิมของเจ้าหน้าที่/กรรมการยังใช้ได้
+การกำหนดบทบาทใหม่แทนที่สิทธิ์เดิมทันทีใน request ถัดไป และล้าง pending_role เดิม (ถ้ามี) การระงับปิดสิทธิ์และยกเลิกคำขอค้าง
+Admin ไม่สามารถเปลี่ยนสิทธิ์/ระงับตนเองหรือบัญชี Admin อื่นผ่าน UI/RPC นี้ และไม่สามารถสร้าง Admin เพิ่มผ่านการสมัคร
+ทุกการแก้ไขต้องระบุเหตุผล และส่ง version เพื่อป้องกันเขียนทับข้อมูลที่ถูกเปลี่ยนไปแล้ว
 
-ตอนนี้เปิดบัญชีผ่านผู้ดูแลเท่านั้น หน้า `/register` แจ้งวิธีขอบัญชี และยังไม่มีการรีเซ็ตรหัสผ่านผ่านอีเมล ก่อนเปิดสมัครสมาชิกหรือกู้รหัสผ่านให้เพิ่ม flow ยืนยันอีเมลและตั้ง SMTP/redirect URL ให้ครบ
+## การเปิด Admin คนแรกในโปรเจกต์ใหม่
+เจ้าของ Supabase ใช้ Admin Auth API ฝั่งที่เชื่อถือได้ สร้างบัญชีพร้อม user_metadata.full_name และ user_metadata.student_id
+Trigger จะสร้างเป็น Student จากนั้นเจ้าของโปรเจกต์กำหนด Admin ผ่าน SQL Editor พร้อมบันทึก bootstrap_admin ใน portal_audit_log ภายใน transaction เดียว
+อย่าเพิ่ม Admin จากอีเมลที่ส่งมาทางฟอร์มสมัคร และอย่าใส่รหัสผ่านใน SQL หรือ Git
+หลังติดตั้ง trigger นี้ การสร้างบัญชีจาก Dashboard ที่ไม่มี full_name/student_id จะไม่ผ่าน ให้ใช้แบบสมัครหรือ Admin Auth API พร้อม metadata
 
-## บทบาทและเส้นทาง
+## ขอบเขตที่ยังเป็นตัวอย่าง
+ทุน ใบสมัคร เอกสาร โปรไฟล์เพิ่มเติม การให้คะแนน การแจ้งเตือน และจ่ายทุนยังเป็น mock
+ข้อมูลพื้นฐานของ Admin บันทึกจริง แต่ยังไม่ได้เชื่อมเข้าฟอร์ม mock เหล่านี้
+Admin จัดการสถานะเข้า portal ไม่ใช่ลบ/ban บัญชี Auth; session เดิมถูกปฏิเสธโดยการตรวจ active ใน request ถัดไป
 
-| บทบาท | หน้าหลัก | หน้าที่อนุญาต |
-| --- | --- | --- |
-| student | `/dashboard` | `/profile`, `/applications`, `/apply` |
-| staff | `/staff` | `/staff/scholarships`, `/staff/review`, `/scholarships/new` |
-| committee | `/committee` | `/staff/evaluation` |
+## สิทธิ์และฐานข้อมูล
+- ทุกหน้า/Server Action ของ Admin ตรวจ requireRole(["admin"]); ทุก RPC ตรวจ JWT auth.uid และ active Admin ซ้ำ
+- profile อ่านได้เฉพาะตนเองหรือ Admin; audit อ่านได้เฉพาะ Admin; ข้อมูลพื้นฐานที่เปิดใช้งานอ่านได้โดยสมาชิก active
+- ไม่มี authenticated INSERT/UPDATE/DELETE grants บนทั้งสามตาราง แม้ Admin ก็ต้องใช้ RPC
+- public RPC เป็น SECURITY INVOKER; implementation อยู่ private schema, pin search_path, ตรวจสิทธิ์ก่อนเขียน และเขียน audit ใน transaction เดียว
+- audit เป็น append-only สำหรับบัญชีเว็บ ไม่ใช่ tamper-proof ต่อเจ้าของฐานข้อมูล/service_role
+- proxy ต่ออายุคุกกี้และตั้ง cache header; การตรวจสิทธิ์จริงอยู่ใกล้ข้อมูล ไม่เชื่อ URL/header/user_metadata
+- โมดูลใหม่ต้องมี RLS ตรวจ active/role/เจ้าของข้อมูลเอง อย่าให้ role จาก JWT เก่าข้ามสถานะที่ฐานข้อมูล
 
-ทุกบัญชีเปิด `/account` ได้ ผู้ที่ยังไม่เข้าสู่ระบบเข้าหน้าทุนสาธารณะได้ แต่เข้าหน้าที่ป้องกันจะถูกส่งไป `/login` ผู้ที่เข้าสู่ระบบแล้วแต่บทบาทไม่ตรงจะถูกส่งไป `/access-denied`
+## ทดสอบ
+npm run lint
+npm run build
 
-## เพิ่มบัญชีหรือแก้สิทธิ์
+scripts/check-auth.mjs รับ JSON array ผ่าน stdin มี email,password,role สำหรับ student,staff,committee,admin อย่างละหนึ่งบัญชี
+รันกับ production server และตั้ง AUTH_TEST_BASE_URL ถ้าไม่ใช่ localhost:3000
+โปรแกรมตรวจ login, role, RLS, cache, route matrix และไม่พิมพ์รหัสผ่านหรือโทเคน
+อย่าเก็บ JSON credentials ลงไฟล์หรือ Git
 
-ผู้ดูแลโปรเจกต์สร้างบัญชีใน Supabase → Authentication → Users → Add user → Create new user จากนั้นเพิ่มแถวใน `portal_profiles` โดยใช้ UUID ของบัญชีนั้น กรอก `full_name`, `student_id`, `role` และ `active` ผ่าน Supabase Dashboard ที่มีสิทธิ์ผู้ดูแล ไม่เพิ่มรหัสผ่านลงในตารางนี้หรือไฟล์ SQL
+supabase/tests/admin_permissions.sql เป็น transaction test ที่สร้างข้อมูลชั่วคราวและ ROLLBACK ทั้งหมด ใช้กับโปรเจกต์ทดสอบที่มี Admin อย่างน้อยหนึ่งคน
+ตรวจ forced Student, RLS, ห้ามเขียนตรง, เปลี่ยนบทบาทครั้งเดียว, ป้องกันยกระดับเป็น Admin, legacy pending/approve/reject, version, suspend/activate, audit, reference และป้องกัน Admin
+ไฟล์ migration มีเวอร์ชันตรง remote history; อย่านำ migration เดิมไปรันซ้ำกับโปรเจกต์ทีมที่อัปเดตแล้ว
 
-หากต้องการระงับการเข้าหน้าเว็บ ให้ตั้ง `portal_profiles.active = false` การตรวจสิทธิ์อ่านสถานะใหม่ทุก request ผู้ใช้เปลี่ยน role หรือ active ของตัวเองผ่าน client ไม่ได้
-
-สคีมาอยู่ใน `supabase/migrations/` เวอร์ชันไฟล์ตรงกับ migration ที่ใช้จริงในโปรเจกต์ต้นทาง สำหรับโปรเจกต์ใหม่ให้ใช้ migration นี้ก่อนเพิ่มโปรไฟล์
-
-## กติกาสำหรับพัฒนาฟีเจอร์ต่อ
-
-- หน้า Server Component ที่ต้องล็อกอินเรียก `requireViewer()` หรือ `requireRole([...])` จาก `lib/auth/server.ts`
-- ทุก Server Action/Route Handler ที่อ่านหรือเขียนข้อมูลต้องตรวจสิทธิ์อีกครั้ง แม้เมนูหรือหน้าที่เรียกจะตรวจแล้ว
-- ใช้ `viewer.id` จากเซิร์ฟเวอร์เป็นเจ้าของข้อมูล ไม่รับ user ID หรือบทบาทจาก form, URL, header หรือ `user_metadata` มาเป็นสิทธิ์
-- เพิ่ม RLS ให้ตารางของแต่ละโมดูลโดยตรวจเจ้าของข้อมูล/บทบาทที่เหมาะสม การล็อกหน้าเว็บอย่างเดียวไม่คุ้มครอง Data API
-- ห้ามใช้ Secret/Service role key ใน `NEXT_PUBLIC_*` หรือใน Client Component
-- `proxy.ts` ต่ออายุคุกกี้และป้องกันแคชหน้าเว็บ แต่การตัดสินสิทธิ์อยู่ที่เซิร์ฟเวอร์และ RLS
-
-## การตรวจสอบ
-
-`npm run lint` และ `npm run build` ตรวจโค้ดกับ Next.js เวอร์ชันที่ติดตั้ง
-
-`scripts/check-auth.mjs` ทดสอบบัญชีทั้งสามบทบาทกับ Supabase และ Next.js ที่เปิดอยู่: ล็อกอิน อ่านได้เฉพาะโปรไฟล์ตัวเอง เปลี่ยนบทบาทไม่ได้ การป้องกันทุกเส้นทาง และไม่รับ role จาก header ปลอม
-
-ทดสอบกับ production build โดยรัน `npm run build` และ `npm run start` ก่อน จากนั้นเรียก `node --env-file=.env.local scripts/check-auth.mjs` แล้วส่ง JSON array ผ่าน stdin โดยแต่ละรายการมี `email`, `password`, `role` (student/staff/committee อย่างละหนึ่งรายการ) ใช้บัญชีที่ได้รับอนุญาตให้ทดสอบเท่านั้น ไม่เก็บ JSON ที่มีรหัสผ่านใน Git โปรแกรมแสดงเฉพาะผลตรวจ ไม่พิมพ์รหัสผ่านหรือโทเคน
-
-ถ้าใช้พอร์ตอื่น ให้ตั้ง `AUTH_TEST_BASE_URL` เป็น URL ที่เปิดทดสอบ ค่าเริ่มต้นคือ `http://localhost:3000` การทดสอบตรวจ `Cache-Control: no-store` จึงต้องใช้ production server เพราะ Next.js dev server เปลี่ยน cache header เป็น `no-cache, must-revalidate`
-
-ยังต้องทดสอบผ่านเบราว์เซอร์: กรอกรหัสผ่านผิด ล็อกอิน เปลี่ยนหน้า รีเฟรช ออกจากระบบ และกลับเข้า URL เดิมโดยไม่มีเซสชัน
-
-Supabase Advisor แจ้งว่าโปรเจกต์ยังไม่เปิด Leaked Password Protection ผู้ดูแลตรวจการตั้งค่าได้ตาม [เอกสารความปลอดภัยของรหัสผ่าน](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)
+Supabase Advisor เดิมแจ้ง [Leaked Password Protection ยังปิด](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)

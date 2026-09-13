@@ -18,6 +18,8 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
         ["/#steps", "ขั้นตอนการสมัคร", "file"],
         ["/#contact", "ติดต่อ", "mail"],
       ]
+    : viewer.role === "admin"
+      ? [["/admin", "จัดการสมาชิก", "people"], ["/admin/reference", "ข้อมูลพื้นฐาน", "folder"], ["/admin/audit", "ประวัติการแก้ไข", "file"]]
     : viewer.role === "staff"
       ? [
           ["/staff", "แดชบอร์ด", "home"],
@@ -58,7 +60,7 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
         </nav>
         {!viewer ? (
           <div className="header-actions">
-            <Link className="btn secondary" href="/register">ขอเปิดบัญชี</Link>
+            <Link className="btn secondary" href="/register">สมัครสมาชิก</Link>
             <Link className="btn" href="/login">เข้าสู่ระบบ</Link>
           </div>
         ) : (
@@ -91,7 +93,7 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
         )}
       </header>
       <main id="main-content" className={landing ? "landing" : "workspace"}>
-        {viewer && !landing && (
+        {viewer && !landing && !path.startsWith("/admin") && (
           <p className="module-preview-notice" role="note">
             บัญชีและสิทธิ์ใช้งานเชื่อมต่อระบบจริงแล้ว · ข้อมูลทุน ใบสมัคร เอกสาร และผลประเมินยังเป็นตัวอย่าง
           </p>

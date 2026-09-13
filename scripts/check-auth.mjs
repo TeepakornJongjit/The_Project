@@ -13,12 +13,13 @@ const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 assert(url && key, "Load .env.local before running this check");
 const base = process.env.AUTH_TEST_BASE_URL ?? "http://localhost:3000";
 const routeRoles = {
+  "/admin": "admin", "/admin/reference": "admin", "/admin/audit": "admin",
   "/dashboard": "student", "/profile": "student", "/applications": "student", "/apply": "student",
   "/staff": "staff", "/staff/scholarships": "staff", "/staff/review": "staff", "/scholarships/new": "staff",
   "/committee": "committee", "/staff/evaluation": "committee",
 };
-const homes = { student: "/dashboard", staff: "/staff", committee: "/committee" };
-assert.deepEqual(accounts.map(a => a.role).sort(), ["committee", "staff", "student"]);
+const homes = { admin: "/admin", student: "/dashboard", staff: "/staff", committee: "/committee" };
+assert.deepEqual(accounts.map(a => a.role).sort(), ["admin", "committee", "staff", "student"]);
 const anonymous = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 const anonymousProfiles = await anonymous.from("portal_profiles").select("id");
 assert(anonymousProfiles.error, "Anonymous users must not read account profiles");
@@ -46,7 +47,9 @@ for (const account of accounts) {
     assert(user);
     const { data: profiles, error: profileError } = await client.from("portal_profiles").select("id,role,full_name");
     assert.equal(profileError, null);
-    assert.equal(profiles.length, 1, "RLS must return only the caller's profile");
+    if (account.role !== "admin") assert.equal(profiles.length, 1, "RLS must return only the caller's profile");
+    else assert(profiles.length >= 4, "Admin must read member accounts");
+    profiles.sort((a,b) => Number(b.id === user.id) - Number(a.id === user.id));
     assert.equal(profiles[0].id, user.id);
     assert.equal(profiles[0].role, account.role);
     const attemptedRole = account.role === "staff" ? "committee" : "staff";

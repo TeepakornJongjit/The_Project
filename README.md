@@ -26,11 +26,12 @@ npm run dev
 | --- | --- |
 | `/` | หน้าแรกสาธารณะ |
 | `/login` | เข้าสู่ระบบจริงด้วยอีเมลและรหัสผ่าน |
-| `/register` | ข้อมูลการขอเปิดบัญชีผ่านผู้ดูแล |
+| `/register` | สมัครนักศึกษาจริง (ต้องตั้ง SMTP สำหรับยืนยันอีเมล) |
 | `/scholarships` | รายการทุนตัวอย่างสาธารณะ |
 | `/dashboard`, `/profile`, `/applications`, `/apply` | นักศึกษา |
 | `/staff`, `/staff/scholarships`, `/staff/review`, `/scholarships/new` | เจ้าหน้าที่ทุน |
 | `/committee`, `/staff/evaluation` | กรรมการ |
+| `/admin`, `/admin/reference`, `/admin/audit` | Admin: สมาชิก ข้อมูลพื้นฐาน และประวัติ |
 | `/account` | ข้อมูลจริงของบัญชีที่เข้าสู่ระบบ |
 | `/menu` | ส่งกลับหน้าหลักตามบทบาท |
 | `/about` | ข้อมูลระบบ |
@@ -46,6 +47,9 @@ npm run dev
 app/
   layout.tsx                 # อ่านบัญชีที่ยืนยันแล้วและครอบด้วย Shell
   [...screen]/page.tsx        # หน้าทุน/นักศึกษา/เจ้าหน้าที่พร้อมตรวจสิทธิ์
+  admin/                    # สมาชิก ข้อมูลพื้นฐาน ประวัติจริง
+  actions/register.ts       # สมัครนักศึกษาและยืนยันอีเมล
+  actions/admin.ts          # คำสั่ง Admin ผ่าน RPC
   actions/auth.ts            # เข้าสู่ระบบและออกจากระบบฝั่งเซิร์ฟเวอร์
   account/page.tsx           # ข้อมูลบัญชีจริง
   committee/page.tsx         # พื้นที่กรรมการ
@@ -95,7 +99,7 @@ npm run lint
 npm run build
 ```
 
-ทดสอบล็อกอินทั้งสามบทบาท รหัสผ่านผิด รีเฟรช เปิด URL ที่ไม่มีสิทธิ์ และออกจากระบบ คู่มือการรันทดสอบฐานข้อมูลและเส้นทางอยู่ใน [docs/authentication.md](docs/authentication.md)
+ทดสอบล็อกอินทั้งสี่บทบาท รหัสผ่านผิด รีเฟรช เปิด URL ที่ไม่มีสิทธิ์ และออกจากระบบ คู่มือการรันทดสอบฐานข้อมูลและเส้นทางอยู่ใน [docs/authentication.md](docs/authentication.md)
 
 ## การจัดการ branch
 

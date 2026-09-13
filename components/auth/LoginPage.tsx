@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import RegisterForm from "./RegisterForm";
 import { login } from "@/app/actions/auth";
 import { Brand, Icon, Panel } from "@/components/portal/Shared";
 
@@ -32,13 +33,10 @@ export default function LoginPage({ register = false }: { register?: boolean }) 
       <div className="auth-right">
         <p className="auth-motto">เพื่อการเติบโตของทุกคน ในรั้วมหาวิทยาลัย <span>A Brighter Tomorrow Together</span></p>
         <Panel>
-          <h1>{register ? "ขอเปิดบัญชีผู้ใช้" : "เข้าสู่ระบบ"}</h1>
+          <h1>{register ? "สมัครสมาชิกนักศึกษา" : "เข้าสู่ระบบ"}</h1>
           <h2>ระบบติดตามทุนการศึกษา</h2>
           {register ? (
-            <>
-              <p>ขณะนี้ผู้ดูแลระบบเป็นผู้เปิดบัญชีและกำหนดบทบาทให้ กรุณาติดต่อผู้ดูแลโครงการเพื่อขอบัญชีผู้ใช้</p>
-              <Link className="btn" href="/login">มีบัญชีแล้ว เข้าสู่ระบบ</Link>
-            </>
+            <RegisterForm />
           ) : (
             <form action={action}>
               <label htmlFor="login-email">อีเมลมหาวิทยาลัย <b>*</b></label>
@@ -60,7 +58,7 @@ export default function LoginPage({ register = false }: { register?: boolean }) 
                 {pending ? "กำลังเข้าสู่ระบบ…" : "เข้าสู่ระบบ"}<Icon name="arrow" />
               </button>
               {state.error && <p className="soft-box" role="alert">{state.error}</p>}
-              <p className="auth-switch">ยังไม่มีบัญชี? <Link href="/register">ขอเปิดบัญชีผู้ใช้</Link></p>
+              <p className="auth-switch">ยังไม่มีบัญชี? <Link href="/register">สมัครสมาชิก</Link></p>
             </form>
           )}
         </Panel>
