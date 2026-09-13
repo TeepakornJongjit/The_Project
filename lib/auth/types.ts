@@ -6,6 +6,7 @@ export type Viewer = {
   fullName: string;
   studentId: string;
   role: PortalRole;
+  avatarVersion?: number;
 };
 
 export const roleLabels: Record<PortalRole, string> = {

@@ -8,7 +8,7 @@ import {
   DetailPage,
   SearchPage,
 } from "@/components/portal/StudentPages";
-import { ApplyForm, Profile } from "@/components/portal/Forms";
+import { ApplyForm } from "@/components/portal/Forms";
 import {
   Evaluation,
   ManageScholarships,
@@ -32,7 +32,7 @@ export default async function Page({ params, searchParams }: Props) {
     const viewer = await getViewer();
     if (viewer) redirect(homeForRole(viewer.role));
   }
-  const studentPages = ["dashboard", "profile", "applications", "apply"];
+  const studentPages = ["dashboard", "applications", "apply"];
   const student = studentPages.includes(path) ? await requireRole(["student"]) : null;
   const staff = ["staff", "staff/scholarships", "staff/review"].includes(path)
     ? await requireRole(["staff"]) : null;
@@ -40,7 +40,6 @@ export default async function Page({ params, searchParams }: Props) {
   if (path === "register") return <AuthPage register />;
   if (path === "login") return <AuthPage />;
   if (path === "dashboard" && student) return <Dashboard viewer={student} />;
-  if (path === "profile" && student) return <Profile key={student.id} viewer={student} />;
   if (path === "scholarships") return <SearchPage />;
   if (path === "applications") return <Applications />;
   if (path === "staff" && staff) return <StaffDashboard viewer={staff} />;

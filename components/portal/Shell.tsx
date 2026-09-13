@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { Brand, Icon } from "./Shared";
 import LogoutButton from "@/components/auth/LogoutButton";
+import Avatar from "@/components/account/Avatar";
 import { homeForRole, roleLabels, type Viewer } from "@/lib/auth/types";
 
 export default function Shell({ children, viewer }: { children: ReactNode; viewer: Viewer | null }) {
@@ -74,7 +75,7 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
             </details>
             <details>
               <summary aria-label="เมนูบัญชีผู้ใช้">
-                <span className="account-avatar" aria-hidden="true"><Icon name="user" /></span>
+                <Avatar version={viewer.avatarVersion} name={viewer.fullName} />
                 <span>
                   <strong>{viewer.fullName}</strong>
                   <small>{roleLabels[viewer.role]} · {viewer.studentId}</small>
@@ -82,9 +83,8 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
                 <span>⌄</span>
               </summary>
               <div className="popover">
-                <Link href="/account">บัญชีของฉัน</Link>
+                <Link href="/profile">โปรไฟล์ของฉัน</Link>
                 <Link href={homeForRole(viewer.role)}>หน้าหลักของฉัน</Link>
-                {viewer.role === "student" && <Link href="/profile">โปรไฟล์และเอกสาร</Link>}
                 <Link href="/">กลับหน้าแรก</Link>
                 <LogoutButton />
               </div>
@@ -93,7 +93,7 @@ export default function Shell({ children, viewer }: { children: ReactNode; viewe
         )}
       </header>
       <main id="main-content" className={landing ? "landing" : "workspace"}>
-        {viewer && !landing && !path.startsWith("/admin") && (
+        {viewer && !landing && !path.startsWith("/admin") && path !== "/profile" && path !== "/account" && (
           <p className="module-preview-notice" role="note">
             บัญชีและสิทธิ์ใช้งานเชื่อมต่อระบบจริงแล้ว · ข้อมูลทุน ใบสมัคร เอกสาร และผลประเมินยังเป็นตัวอย่าง
           </p>

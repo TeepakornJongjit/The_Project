@@ -94,6 +94,8 @@ export default async function ApplicationsPage() {
 
 ## ตรวจงานก่อนส่ง
 
+หน้าโปรไฟล์จริงใช้ร่วมกันทุกบทบาทที่ `/profile` ดูฟิลด์ที่แก้ไขได้ การตั้งค่า และวิธีทดสอบใน [docs/profiles.md](docs/profiles.md)
+
 ```bash
 npm run lint
 npm run build
