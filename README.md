@@ -1,4 +1,4 @@
-# Campus Scholarship Portal — เทมเพลต UI กลาง
+# ระบบติดตามทุนการศึกษา — เทมเพลต UI กลาง
 
 ใช้ `pakornbu-lang/coe-next` เป็น repository หลัก และพัฒนาต่อบนโครง Next.js App Router + TypeScript + Tailwind CSS เดิมของทีม
 

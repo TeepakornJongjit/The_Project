@@ -124,11 +124,9 @@ export function Brand() {
       <span className="brand-leaf" />
       <span>
         <strong>
-          Campus
-          <br />
-          Scholarship Portal
+          ระบบติดตามทุนการศึกษา
         </strong>
-        <small>ระบบทุนการศึกษามหาวิทยาลัย</small>
+        <small>ทุนภายในมหาวิทยาลัย</small>
       </span>
     </Link>
   );
@@ -275,7 +273,7 @@ export function Banner({
           {staff ? "สวัสดีค่ะ" : "ยินดีต้อนรับกลับมา"}
         </span>
         <h1>{title || (staff ? "น.ส.กมลวรรณ ใจดี" : "น.ส.ณัฐธิดา ใจดี")}</h1>
-        <h3>{text || "ระบบทุนการศึกษาภายในมหาวิทยาลัย"}</h3>
+        <h3>{text || "ระบบติดตามทุนการศึกษา"}</h3>
         <p>
           มาร่วมค้นหาโอกาสดี ๆ เพื่อพัฒนาตนเอง เพิ่มศักยภาพ
           และสร้างอนาคตที่ดีกว่าไปด้วยกัน
@@ -453,7 +451,7 @@ export function PageDirectory() {
   return (
     <>
       <Heading
-        title="หน้าจอระบบทุนการศึกษา"
+        title="หน้าจอระบบติดตามทุนการศึกษา"
         description="เลือกดูหน้าสำหรับนักศึกษา เจ้าหน้าที่ และกรรมการ"
       />
       <div className="directory">
