@@ -1,7 +1,7 @@
 {
   "editor.formatOnSave": true,
-  "files.exclude": {
-    "**/node_modules": true,
-    "**/.env.local": true
+  "explorer.excludeGitIgnore": false,
+  "files.excluude":{
+    "**/node_modules":true
   }
 }
