@@ -20,8 +20,8 @@ export default function CreateScholarship() {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '40px auto', padding: '24px', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ marginBottom: '20px', color: '#333' }}>สร้างทุนการศึกษา</h2>
+    <div style={{ maxWidth: '600px', margin: '40px auto', padding: '24px', background: 'var(--surface)', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+      <h2 style={{ marginBottom: '20px', color: 'var(--heading)' }}>สร้างทุนการศึกษา</h2>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>ชื่อทุน:</label>
@@ -30,7 +30,7 @@ export default function CreateScholarship() {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid var(--field-border)' }}
             required
           />
         </div>
@@ -42,7 +42,7 @@ export default function CreateScholarship() {
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid var(--field-border)' }}
             required
           />
         </div>
@@ -54,7 +54,7 @@ export default function CreateScholarship() {
             name="quota"
             value={formData.quota}
             onChange={handleChange}
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid var(--field-border)' }}
             required
           />
         </div>
@@ -66,7 +66,7 @@ export default function CreateScholarship() {
             name="deadline"
             value={formData.deadline}
             onChange={handleChange}
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid var(--field-border)' }}
             required
           />
         </div>
@@ -78,13 +78,14 @@ export default function CreateScholarship() {
             value={formData.description}
             onChange={handleChange}
             rows="4"
-            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid var(--field-border)' }}
           />
         </div>
 
         <button
           type="submit"
-          style={{ background: '#2563eb', color: '#fff', padding: '12px', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }}
+          className="primary-button"
+          style={{ color: '#fff', padding: '12px', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }}
         >
           บันทึกทุนการศึกษา
         </button>

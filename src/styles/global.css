@@ -1,11 +1,15 @@
 :root {
-    --primary: #357a58;
-    --primary-soft: #e7f3ec;
-    --heading: #14215e;
-    --text: #526079;
-    --background: #f4f8f6;
+    --primary: #0369a1;
+    --primary-hover: #075985;
+    --primary-soft: #e0f2fe;
+    --heading: #0c4a6e;
+    --text: #475569;
+    --background: #f0f9ff;
     --surface: #ffffff;
-    --border: #e3e9ee;
+    --border: #cbdff1;
+    --field-border: #7c9db8;
+    --banner-start: #dbeafe;
+    --banner-end: #e0f2fe;
 }
 
 * {
@@ -32,7 +36,7 @@ button {
 }
 
 :focus-visible {
-    outline: 3px solid #2563eb;
+    outline: 3px solid var(--primary);
     outline-offset: 3px;
 }
 
@@ -112,7 +116,7 @@ button {
 .welcome-banner {
     padding: 32px;
     border-radius: 16px;
-    background: linear-gradient(110deg, #e0f1e6, #edf5fc);
+    background: linear-gradient(110deg, var(--banner-start), var(--banner-end));
 }
 
 .welcome-banner h1 {
@@ -161,7 +165,7 @@ button {
 }
 
 .primary-button:hover {
-    background: #286044;
+    background: var(--primary-hover);
 }
 
 @media (max-width: 900px) {
