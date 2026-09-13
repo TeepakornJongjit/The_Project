@@ -14,7 +14,7 @@ assert(url && key, "Load .env.local before running this check");
 const base = process.env.AUTH_TEST_BASE_URL ?? "http://localhost:3000";
 const routeRoles = {
   "/admin": "admin", "/admin/reference": "admin", "/admin/audit": "admin",
-  "/dashboard": "student", "/profile": "student", "/applications": "student", "/apply": "student",
+  "/dashboard": "student", "/applications": "student", "/apply": "student",
   "/staff": "staff", "/staff/scholarships": "staff", "/staff/review": "staff", "/scholarships/new": "staff",
   "/committee": "committee", "/staff/evaluation": "committee",
 };

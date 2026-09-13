@@ -9,7 +9,7 @@ import { isPortalRole, type PortalRole, type Viewer } from "./types";
 export async function readViewer(client: SupabaseClient, user: User): Promise<Viewer | null> {
   const { data, error } = await client
     .from("portal_profiles")
-    .select("full_name, student_id, role, active")
+    .select("full_name, student_id, role, active, avatar_path, version")
     .eq("id", user.id)
     .maybeSingle();
   if (error) throw new Error("Unable to load portal permissions");
@@ -20,6 +20,7 @@ export async function readViewer(client: SupabaseClient, user: User): Promise<Vi
     fullName: data.full_name,
     studentId: data.student_id,
     role: data.role,
+    avatarVersion: data.avatar_path ? data.version : undefined,
   };
 }
 

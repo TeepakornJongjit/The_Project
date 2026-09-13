@@ -3,6 +3,7 @@ import {requireRole} from "@/lib/auth/server";
 import {createClient} from "@/lib/supabase/server";
 import {actionLabels} from "@/lib/admin/types";
 const fields:Record<string,string>={full_name:"ชื่อ–นามสกุล",student_id:"รหัสประจำตัว",email:"อีเมล",role:"บทบาท",active:"เปิดใช้งาน",pending_role:"บทบาทรออนุมัติ",name:"ชื่อข้อมูล",kind:"หมวดข้อมูล"};
+Object.assign(fields,{phone:"เบอร์โทรศัพท์",department:"หน่วยงาน",position:"ตำแหน่ง",expertise:"ความเชี่ยวชาญ",avatar_path:"ไฟล์รูปโปรไฟล์",address:"ที่อยู่ติดต่อ",major:"สาขาวิชา",education_level:"ระดับการศึกษา",study_year:"ชั้นปี",gpa:"เกรดเฉลี่ย"});
 function display(value:unknown){if(value===null||value===undefined)return "—";if(typeof value==="boolean")return value?"ใช่":"ไม่";return String(value);}
 export default async function AuditPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){
  await requireRole(["admin"]); const params=await searchParams;
