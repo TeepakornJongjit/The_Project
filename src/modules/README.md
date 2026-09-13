@@ -1,6 +1,8 @@
 # Modules
 
-Source code will be separated according to the agreed project modules:
+The project uses **Next.js App Router**. New application code should be placed under `app/`, with shared utilities under `lib/`.
+
+The six agreed project modules are:
 
 - `m01-user-student/` — User & Student Management
 - `m02-scholarship/` — Scholarship Management
@@ -9,4 +11,4 @@ Source code will be separated according to the agreed project modules:
 - `m05-award-followup/` — Award & Follow-up Management
 - `m06-dashboard-report-notification/` — Dashboard, Report & Notification
 
-Each module should keep its own UI, business logic, and data-access code where practical. Shared Supabase access belongs under `src/lib/`.
+When creating module folders, prefer the Next.js App Router structure and keep shared Supabase access under `lib/supabase/`.
