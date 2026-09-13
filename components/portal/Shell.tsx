@@ -124,7 +124,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <footer className="site-footer">
-        <span>Campus Scholarship Portal · ระบบทุนการศึกษาภายในมหาวิทยาลัย</span>
+        <span>ระบบติดตามทุนการศึกษา · ระบบทุนการศึกษาภายในมหาวิทยาลัย</span>
         <Link href="/menu">ดูตัวอย่างทั้ง 13 หน้า</Link>
         <small>ข้อมูลตัวอย่าง · ยังไม่เชื่อมต่อระบบจริง</small>
       </footer>

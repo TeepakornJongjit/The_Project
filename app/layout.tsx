@@ -6,8 +6,8 @@ import "./ui-v1.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "ระบบทุนการศึกษา | Campus Scholarship Portal",
-    template: "%s | Campus Scholarship Portal",
+    default: "ระบบติดตามทุนการศึกษา",
+    template: "%s | ระบบติดตามทุนการศึกษา",
   },
   description: "ระบบจัดการและติดตามทุนการศึกษาภายในมหาวิทยาลัย",
 };

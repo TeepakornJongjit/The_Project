@@ -13,7 +13,7 @@ export function Landing() {
             เฉพาะทุนภายในมหาวิทยาลัย
           </span>
           <h1>
-            พอร์ทัลทุนการศึกษา
+            ระบบติดตามทุนการศึกษา
             <br />
             ภายในมหาวิทยาลัย
           </h1>
@@ -287,8 +287,8 @@ export function AuthPage({ register = false }: { register?: boolean }) {
         </p>
         <Panel>
           <h1>{register ? "สมัครสมาชิกนักศึกษา" : "เข้าสู่ระบบ"}</h1>
-          <h2>Campus Scholarship Portal</h2>
-          <p>ระบบติดตามทุนภายในมหาวิทยาลัย</p>
+          <h2>ระบบติดตามทุนการศึกษา</h2>
+          <p>ระบบติดตามทุนการศึกษา</p>
           <form onSubmit={submit}>
             {register && (
               <>

@@ -9,7 +9,7 @@ export default function AboutPage() {
     <div className="portal-page-stack">
       <PageHeader title="เกี่ยวกับระบบ" description="ร่วมดูแลทุนการศึกษา ตั้งแต่การสมัครจนถึงการติดตามผล" />
       <Card className="portal-prose">
-        <h2>Campus Scholarship Portal</h2>
+        <h2>ระบบติดตามทุนการศึกษา</h2>
         <p>ระบบจัดการและติดตามทุนการศึกษาภายในมหาวิทยาลัย เพื่อให้นักศึกษา เจ้าหน้าที่ คณะกรรมการ และผู้ดูแลระบบทำงานร่วมกันได้อย่างเป็นขั้นตอน</p>
         <h2>สิ่งที่ทดลองได้ในขณะนี้</h2>
         <ul>

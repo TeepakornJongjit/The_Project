@@ -8,10 +8,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <a className="portal-skip-link" href="#main-content">ข้ามไปเนื้อหาหลัก</a>
       <header className="portal-header">
         <div className="portal-header-content">
-          <Link className="portal-brand" href="/" aria-label="Campus Scholarship Portal — หน้าแรก">
+          <Link className="portal-brand" href="/" aria-label="ระบบติดตามทุนการศึกษา — หน้าแรก">
             <span className="portal-brand-mark" aria-hidden="true">ทุน</span>
             <span>
-              <strong>Campus Scholarship Portal</strong>
+              <strong>ระบบติดตามทุนการศึกษา</strong>
               <small>ระบบทุนการศึกษาภายในมหาวิทยาลัย</small>
             </span>
           </Link>
@@ -23,7 +23,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <footer className="portal-footer">
-        <span>Campus Scholarship Portal</span>
+        <span>ระบบติดตามทุนการศึกษา</span>
         <span>ร่วมสร้างโอกาสทางการศึกษา</span>
       </footer>
     </div>
