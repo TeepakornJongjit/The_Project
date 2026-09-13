@@ -1,19 +1,22 @@
 {
   "name": "scholarship-tracking-system",
-  "private": true,
   "version": "0.1.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite --port 3000 --strictPort",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "@supabase/supabase-js": "latest",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@supabase/supabase-js": "^2.112.3",
+    "next": "16.2.11",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "vite": "latest"
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
   }
 }
