@@ -6,26 +6,20 @@ Project ref: `arhbvuslpfdxkfshedkc`
 ## Local setup
 
 1. Copy `.env.example` to `.env.local`.
-2. Set `VITE_SUPABASE_URL` to the project URL.
-3. Set `VITE_SUPABASE_ANON_KEY` to the project's public anon key.
+2. Set `NEXT_PUBLIC_SUPABASE_URL` to the project URL.
+3. Set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to the project's public publishable key.
 4. Never commit `.env.local`, service-role keys, or database passwords.
 
-## Current schema
+## Schema
 
-The database currently contains:
+The canonical database schema is maintained in:
 
-- `profiles`
-- `scholarships`
-- `scholarship_criteria`
-- `applications`
-- `application_documents`
-- `evaluations`
-- `awards`
-- `follow_ups`
-- `notifications`
+`supabase/migrations/20260913_final_scholarship_schema.sql`
 
-RLS is enabled on all current public tables.
+The schema is based on the agreed Scholarship Tracking System ER design and includes users/profiles, student and staff roles, scholarships, criteria, document requirements, applications, documents, status history, committee assignments/evaluations, results, disbursements, notifications, permissions, and audit logs.
 
-## Change policy
+## Development rules
 
-Database structure changes must be made through Supabase migrations and reviewed against the project's ER Diagram before implementation.
+- Database structure changes must be made through Supabase migrations.
+- Review schema changes against the project's ER Diagram before implementation.
+- Do not put Supabase service-role or other secret keys in Next.js client-side code.
