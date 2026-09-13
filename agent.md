@@ -4,13 +4,14 @@
 
 ---
 
-## 📌 สรุปกฎเหล็ก 5 ข้อ (Golden Rules)
+## 📌 สรุปกฎเหล็ก 6 ข้อ (Golden Rules)
 
 1. **ห้ามทำงานหรือ commit บนกิ่ง `Developlop` หรือ `main` โดยตรงเด็ดขาด** (ต้องทำบน Feature Branch ของตัวเองเสมอ)
 2. **เริ่มต้นกิ่งใหม่จาก `origin/Developlop` ที่อัปเดตล่าสุดเสมอ**
 3. **ตรวจสอบกิ่งปัจจุบัน (`git branch --show-current`) ก่อนเริ่มเขียนโค้ดทุกครั้ง**
 4. **ทดสอบระบบ (`npm run dev` / `npm run build` / tests) ให้ผ่านก่อน push เสมอ**
-5. **การรวมโค้ดเข้าสู่ `Developlop` ต้องทำผ่าน Pull Request (PR) เท่านั้น**
+5. **ทุกคนและ AI Agent ต้องใช้สกิล `sync-develop` ในการซิงค์โค้ดจาก `Developlop`** ก่อนเริ่มงานรอบใหม่และก่อน push ทุกครั้ง
+6. **การรวมโค้ดเข้าสู่ `Developlop` ต้องทำผ่าน Pull Request (PR) เท่านั้น**
 
 ---
 
@@ -24,7 +25,7 @@ flowchart TD
     D --> E["5. ทดสอบการทำงาน (Quality Gates / Test)"]
     E --> F["6. ตรวจสอบไฟล์ & Add (git status & git add)"]
     F --> G["7. Commit ด้วยข้อความมาตรฐาน"]
-    G --> H["8. Sync อัปเดตล่าสุดจาก Developlop"]
+    G --> H["8. ซิงค์ Developlop ด้วยสกิล sync-develop"]
     H --> I["9. Push ขึ้น Remote Branch ของตนเอง"]
     I --> J["10. เปิด Pull Request (PR) เข้า Developlop"]
 ```
@@ -141,15 +142,38 @@ git commit -m "feat: implement document upload component for M03"
 
 ---
 
-### ขั้นตอนที่ 7: ซิงค์อัปเดตล่าสุดจาก Developlop เข้าสู่กิ่งตนเอง
+### ขั้นตอนที่ 7: ซิงค์อัปเดตล่าสุดจาก Developlop ด้วยสกิล `sync-develop`
 
-ก่อน push งานขึ้น GitHub ให้ดึงการเปลี่ยนแปลงล่าสุดที่เพื่อนคนอื่นอาจ merge เข้า `Developlop` แล้ว เพื่อป้องกัน conflict ในภายหลัง:
+> [!IMPORTANT]
+> **ข้อกำหนดบังคับ**: ทุกคนและ AI Agent ต้องซิงค์โค้ดจาก `Developlop` อย่างสม่ำเสมอ โดยเฉพาะ **ก่อนเริ่มทำงานในแต่ละวัน** และ **ก่อน push งานขึ้น GitHub**
 
+โปรเจกต์นี้มีสกิลมาตรฐานเตรียมไว้ที่ [`.agents/skills/sync-develop/SKILL.md`](file:///.agents/skills/sync-develop/SKILL.md)
+
+#### 🚀 วิธีใช้งานสำหรับผู้ใช้ AI Agent (Antigravity / Copilot / Claude):
+เพียงสั่งคำสั่งสั้น ๆ ในแชท:
+```text
+"sync develop" หรือ "ซิงค์ develop" หรือ "อัปเดตจาก developlop"
+```
+AI Agent จะเรียกใช้สกิล `sync-develop` และดำเนินการตามขั้นตอนความปลอดภัย 6 ขั้นโดยอัตโนมัติ:
+1. ตรวจสอบ `git status` และชื่อกิ่งปัจจุบัน (ห้ามทำบน main หรือ Developlop)
+2. ทำการ `git fetch origin Developlop`
+3. ตรวจสอบ commit diff ระหว่างกิ่งปัจจุบันกับ `origin/Developlop`
+4. รัน `git merge origin/Developlop` อย่างปลอดภัย
+5. รัน Quality Gates ตรวจสอบความถูกต้องของโปรเจกต์
+6. สรุปผลลัพธ์และรอการยืนยันก่อน push
+
+#### 🛠️ วิธีทำด้วยตนเองใน Terminal (หากไม่ได้ใช้ Agent):
 ```powershell
-# 7.1 ดึงประวัติล่าสุดจาก remote
+# 7.1 ตรวจสอบสถานะ working tree ให้สะอาดก่อน
+git status -s
+
+# 7.2 Fetch ข้อมูลล่าสุดจาก Developlop
 git fetch origin Developlop
 
-# 7.2 รวมโค้ดล่าสุดเข้าสู่กิ่งของตนเอง
+# 7.3 ตรวจสอบความแตกต่างก่อนรวมโค้ด
+git log HEAD..origin/Developlop --oneline
+
+# 7.4 Merge อัปเดตล่าสุดเข้าสู่กิ่งของตนเอง
 git merge origin/Developlop
 ```
 
@@ -158,7 +182,7 @@ git merge origin/Developlop
 > 1. หยุดและตรวจสอบไฟล์ที่เกิด conflict ด้วย `git status`
 > 2. เปิดไฟล์ที่มี conflict และปรึกษากับเจ้าของโค้ดส่วนนั้น
 > 3. **ห้ามลบโค้ดของเพื่อนทิ้งโดยพลการ**
-> 4. เมื่อแก้ไข conflict เสร็จแล้ว ให้ทดสอบรันใหม่อีกครั้ง แล้วจึง commit การแก้ไข
+> 4. เมื่อแก้ไข conflict เสร็จแล้ว ให้ทดสอบรัน (`npm run dev`) ใหม่อีกครั้ง แล้วจึง commit การแก้ไข
 
 ---
 
@@ -167,8 +191,8 @@ git merge origin/Developlop
 ผลักโค้ดขึ้นเฉพาะกิ่ง Feature ของตนเองเท่านั้น:
 
 ```powershell
-# Push ครั้งแรกเพื่อตั้งค่า upstream
-git push -u origin <your-branch-name>
+# Push ครั้งแรกเพื่อตั้งค่า upstream (ใส่เครื่องหมายคำพูดหากชื่อกิ่งมี &)
+git push -u origin "<your-branch-name>"
 
 # Push ในครั้งถัดไป
 git push
@@ -200,10 +224,11 @@ git push
 เมื่อ AI Agent (เช่น Antigravity / Claude / GitHub Copilot) ช่วยพัฒนาโค้ด ต้องปฏิบัติตามข้อกำหนดต่อไปนี้อย่างเคร่งครัด:
 
 1. **ตรวจสอบ Branch เสมอ**: ก่อนดำเนินการแก้ไขโค้ดหรือรันคำสั่งใด ๆ ต้องรัน `git branch --show-current` หากพบว่าอยู่บน `Developlop` หรือ `main` ต้องหยุดและแจ้งเตือนผู้ใช้ทันที
-2. **ห้ามแก้ไขไฟล์นอกขอบเขต**: ดำเนินการเฉพาะไฟล์ใน Module ที่ได้รับมอบหมาย ไม่แตะต้อง config ส่วนกลางหรือไฟล์ของ Module อื่นโดยไม่ได้รับคำสั่งชัดเจน
-3. **รักษาความสะอาดของไฟล์ความลับ**: ไม่สร้าง ไม่แก้ไข และไม่ commit ไฟล์ `.env`, `.env.local` หรือ credential ต่าง ๆ
-4. **ทดสอบหลังแก้ไข (Verify)**: หลังเขียนโค้ดเสร็จ ต้องรันการตรวจสอบว่าโค้ดคอมไพล์ผ่าน ไม่พัง build และไม่สร้าง runtime error
-5. **รายงานผลอย่างโปร่งใส**: รายงานสถานะ Git (Branch, Commits, Changes) ให้ผู้ใช้ทราบอย่างชัดเจนทุกครั้งหลังดำเนินการ
+2. **ใช้สกิล `sync-develop` เสมอ**: เมื่อได้รับคำสั่งให้ซิงค์โค้ดจาก `Developlop` ให้เรียกใช้และปฏิบัติตามขั้นตอนใน [`.agents/skills/sync-develop/SKILL.md`](file:///.agents/skills/sync-develop/SKILL.md) ทุกครั้ง
+3. **ห้ามแก้ไขไฟล์นอกขอบเขต**: ดำเนินการเฉพาะไฟล์ใน Module ที่ได้รับมอบหมาย ไม่แตะต้อง config ส่วนกลางหรือไฟล์ของ Module อื่นโดยไม่ได้รับคำสั่งชัดเจน
+4. **รักษาความสะอาดของไฟล์ความลับ**: ไม่สร้าง ไม่แก้ไข และไม่ commit ไฟล์ `.env`, `.env.local` หรือ credential ต่าง ๆ
+5. **ทดสอบหลังแก้ไข (Verify)**: หลังเขียนโค้ดเสร็จ ต้องรันการตรวจสอบว่าโค้ดคอมไพล์ผ่าน ไม่พัง build และไม่สร้าง runtime error
+6. **รายงานผลอย่างโปร่งใส**: รายงานสถานะ Git (Branch, Commits, Changes) ให้ผู้ใช้ทราบอย่างชัดเจนทุกครั้งหลังดำเนินการ
 
 ---
 
@@ -213,7 +238,6 @@ git push
 - [ ] โค้ดคอมไพล์ผ่าน รัน `npm run dev` ได้ ไม่มี error
 - [ ] ไม่มีไฟล์ `.env.local` หรือไฟล์ชั่วคราวค้างใน `git status`
 - [ ] ทำการ commit ด้วยข้อความที่สื่อความหมาย
-- [ ] ซิงค์โค้ดล่าสุดจาก `origin/Developlop` แล้ว
+- [ ] **ซิงค์โค้ดล่าสุดจาก `origin/Developlop` ด้วยสกิล `sync-develop` หรือคำสั่งมาตรฐานแล้ว**
 - [ ] Push ขึ้น remote branch ของตนเองเรียบร้อย
 - [ ] เปิด Pull Request เข้าสู่ `Developlop` (หากฟีเจอร์เสร็จสมบูรณ์)
-
