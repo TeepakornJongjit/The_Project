@@ -1,10 +1,68 @@
 "use client";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { scholarships } from "@/lib/ui-data";
 import { Action, Brand, Icon, Notice, Panel } from "./Shared";
 
+type HomeScholarship = {
+  id: string;
+  title: string;
+  description: string;
+  providerName: string;
+  amount: number;
+  quota: number;
+  openDate: string | null;
+  deadline: string | null;
+  status: string;
+  category: string;
+};
+
+function formatHomeDate(value: string | null) {
+  if (!value) return "-";
+
+  return new Intl.DateTimeFormat("th-TH", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(value));
+}
+
 export function Landing() {
+  const [homeScholarships, setHomeScholarships] =
+    useState<HomeScholarship[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchScholarships() {
+      try {
+        const response = await fetch("/api/home/scholarships", {
+          cache: "no-store",
+        });
+
+        const data = await response.json();
+
+        if (
+          !cancelled &&
+          response.ok &&
+          data.success &&
+          Array.isArray(data.scholarships)
+        ) {
+          setHomeScholarships(data.scholarships);
+        }
+      } catch (error) {
+        console.error("Error fetching scholarships:", error);
+      }
+    }
+
+    fetchScholarships();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       <section className="hero">
@@ -80,44 +138,27 @@ export function Landing() {
         </div>
 
         <div className="landing-scholarships">
-          {[
-            scholarships[0],
-            scholarships[5],
-            scholarships[2],
-          ].map((s, i) => (
+          {homeScholarships.map((s, i) => (
             <article
-              className={`landing-fund fund-${i}`}
+              className={`landing-fund fund-${i % 3}`}
               key={s.id}
             >
               <div className="section-title">
                 <span className="feature-icon">
                   <Icon
-                    name={[
-                      "trophy",
-                      "money",
-                      "people",
-                    ][i]}
+                    name={["trophy", "money", "people"][i % 3]}
                     size={30}
                   />
                 </span>
 
                 <div>
-                  <h3>
-                    {
-                      [
-                        "ทุนเรียนดี",
-                        "ทุนช่วยเหลือนักศึกษาขาดแคลนทุนทรัพย์",
-                        "ทุนส่งเสริมกิจกรรม",
-                      ][i]
-                    }
-                  </h3>
-
+                  <h3>{s.category || s.title}</h3>
                   <p>{s.description}</p>
                 </div>
 
                 <Link
                   className="btn secondary"
-                  href={`/scholarships/${s.id}`}
+                  href="/scholarships"
                 >
                   ดูรายละเอียด →
                 </Link>
@@ -128,7 +169,7 @@ export function Landing() {
                   <Icon name="money" />
                   จำนวนเงิน
                   <strong>
-                    {s.amount.toLocaleString()} บาท/ปี
+                    {s.amount.toLocaleString("th-TH")} บาท/ปี
                   </strong>
                 </span>
 
@@ -136,7 +177,7 @@ export function Landing() {
                   <Icon name="people" />
                   จำนวนรับ
                   <strong>
-                    {s.quota} ทุน
+                    {s.quota.toLocaleString("th-TH")} ทุน
                   </strong>
                 </span>
 
@@ -144,7 +185,9 @@ export function Landing() {
                   <Icon name="calendar" />
                   เปิดรับสมัคร
                   <strong>
-                    1 – 30 เม.ย. 2568
+                    {formatHomeDate(s.openDate)}
+                    {" – "}
+                    {formatHomeDate(s.deadline)}
                   </strong>
                 </span>
               </div>
