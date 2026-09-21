@@ -219,11 +219,26 @@ export function ManageScholarships() {
               </div>
               <label>
                 คณะ / สาขาที่สมัครได้
-                <select>
+                <select >
                   <option>ทุกคณะ / ทุกสาขาวิชา</option>
-                  <option>คณะวิทยาศาสตร์</option>
-                  <option>คณะวิศวกรรมศาสตร์</option>
+                  <option>สำนักวิชาการจัดการ</option>
+                  <option>สำนักวิชาเทคโนโลยีการเกษตรและอุตสาหกรรมอาหาร</option>
+                  <option>สำนักวิชาพยาบาลศาสตร์</option>
+                  <option>สำนักวิชาแพทยศาสตร์</option>
+                  <option>สำนักวิชาเภสัชศาสตร์</option>
+                  <option>สำนักวิชารัฐศาสตร์และนิติศาสตร์</option>
+                  <option>สำนักวิชาวิทยาศาสตร์</option>
+                  <option>สำนักวิชาวิศวกรรมศาสตร์และเทคโนโลยี</option>
+                  <option>สำนักวิชาศิลปศาสตร์</option>
+                  <option>สำนักวิชาสถาปัตยกรรมศาสตร์และการออกแบบ</option>
+                  <option>สำนักวิชาสหเวชศาสตร์</option>
+                  <option>สำนักวิชาสาธารณสุขศาสตร์</option>
+                  <option>สำนักวิชาสารสนเทศศาสตร์</option>
+                  <option>วิทยาลัยนานาชาติ</option>
+                  <option>วิทยาลัยทันตแพทยศาสตร์นานาชาติ</option>
+                  <option>วิทยาลัยสัตวแพทยศาสตร์อัครราชกุมารี</option>
                 </select>
+
               </label>
             </div>
             <div className="stack">
