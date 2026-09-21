@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "explorer.excludeGitIgnore": false,
+  "files.excluude":{
+    "**/node_modules":true
+  }
+}
