@@ -1,5 +1,5 @@
 "use client";
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useEffect, useState, type FormEvent, type ChangeEvent } from "react";
 import { scholarships, money } from "@/lib/ui-data";
 import {
   Action,
@@ -104,36 +104,492 @@ export function FilePicker({
   );
 }
 
-const profileInitial: Record<string, string> = {
-  "ชื่อ–นามสกุล": "น.ส.ณัฐธิดา ใจดี",
-  อีเมล: "nattida.jaidee@example.com",
-  เบอร์โทรศัพท์: "081-234-5678",
-  ที่อยู่: "123 หมู่ 4 ต.มหาวิทยาลัย อ.เมือง จ.ขอนแก่น 40000",
-  คณะ: "คณะวิทยาศาสตร์",
-  สาขาวิชา: "วิทยาการคอมพิวเตอร์",
-  ระดับการศึกษา: "ปริญญาตรี",
-  ชั้นปี: "ปีที่ 3",
-  เกรดเฉลี่ย: "3.45",
-  สถานภาพบิดามารดา: "อยู่ด้วยกัน",
-  จำนวนสมาชิกในครอบครัว: "4 คน",
-  รายได้ครอบครัวต่อปี: "180,000 บาท",
-  อาชีพผู้ปกครอง: "เกษตรกร",
-  จำนวนพี่น้อง: "2 คน",
-  ชื่อผู้ติดต่อ: "นายสมชาย ใจดี",
-  ความสัมพันธ์: "บิดา",
-  โทรศัพท์ฉุกเฉิน: "081-987-6543",
-  อีเมลผู้ติดต่อ: "somchai@example.com",
-  ธนาคาร: "ธนาคารกสิกรไทย",
-  เลขที่บัญชี: "123-4-56789-0",
-  ชื่อบัญชี: "น.ส.ณัฐธิดา ใจดี",
-  ประเภทบัญชี: "ออมทรัพย์",
+type StudentProfile = {
+  id: string;
+  email: string;
+  fullName: string;
+  studentId: string;
+  phoneNumber: string;
+  faculty: string;
+  major: string;
+  educationLevel: string;
+  yearLevel: number | null;
+  gpa: number | null;
+  address: string;
+  familyIncome: number | null;
+  parentStatus: string;
+  familyMembers: number | null;
+  parentOccupation: string;
+  siblings: number | null;
+  emergencyContactName: string;
+  emergencyContactRelation: string;
+  emergencyContactPhone: string;
+  emergencyContactEmail: string;
+  bankName: string;
+  bankAccountNumber: string;
+  bankAccountName: string;
+  bankAccountType: string;
 };
+
+const emptyValue = "-";
+
+const profileInitial:
+  Record<string, string> = {
+    "ชื่อ–นามสกุล":
+      emptyValue,
+    อีเมล:
+      emptyValue,
+    เบอร์โทรศัพท์:
+      emptyValue,
+    ที่อยู่:
+      emptyValue,
+    คณะ:
+      emptyValue,
+    สาขาวิชา:
+      emptyValue,
+    ระดับการศึกษา:
+      emptyValue,
+    ชั้นปี:
+      emptyValue,
+    เกรดเฉลี่ย:
+      emptyValue,
+    สถานภาพบิดามารดา:
+      emptyValue,
+    จำนวนสมาชิกในครอบครัว:
+      emptyValue,
+    รายได้ครอบครัวต่อปี:
+      emptyValue,
+    อาชีพผู้ปกครอง:
+      emptyValue,
+    จำนวนพี่น้อง:
+      emptyValue,
+    ชื่อผู้ติดต่อ:
+      emptyValue,
+    ความสัมพันธ์:
+      emptyValue,
+    โทรศัพท์ฉุกเฉิน:
+      emptyValue,
+    อีเมลผู้ติดต่อ:
+      emptyValue,
+    ธนาคาร:
+      emptyValue,
+    เลขที่บัญชี:
+      emptyValue,
+    ชื่อบัญชี:
+      emptyValue,
+    ประเภทบัญชี:
+      emptyValue,
+  };
+
+function displayValue(
+  value:
+    | string
+    | number
+    | null
+    | undefined,
+) {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return emptyValue;
+  }
+
+  return String(value);
+}
+
+function profileToDisplay(
+  profile: StudentProfile,
+): Record<string, string> {
+  return {
+    "ชื่อ–นามสกุล":
+      displayValue(
+        profile.fullName,
+      ),
+
+    อีเมล:
+      displayValue(
+        profile.email,
+      ),
+
+    เบอร์โทรศัพท์:
+      displayValue(
+        profile.phoneNumber,
+      ),
+
+    ที่อยู่:
+      displayValue(
+        profile.address,
+      ),
+
+    คณะ:
+      displayValue(
+        profile.faculty,
+      ),
+
+    สาขาวิชา:
+      displayValue(
+        profile.major,
+      ),
+
+    ระดับการศึกษา:
+      displayValue(
+        profile.educationLevel,
+      ),
+
+    ชั้นปี:
+      profile.yearLevel !== null
+        ? `ปีที่ ${profile.yearLevel}`
+        : emptyValue,
+
+    เกรดเฉลี่ย:
+      displayValue(
+        profile.gpa,
+      ),
+
+    สถานภาพบิดามารดา:
+      displayValue(
+        profile.parentStatus,
+      ),
+
+    จำนวนสมาชิกในครอบครัว:
+      profile.familyMembers !==
+      null
+        ? `${profile.familyMembers} คน`
+        : emptyValue,
+
+    รายได้ครอบครัวต่อปี:
+      profile.familyIncome !== null
+        ? `${profile.familyIncome.toLocaleString(
+            "th-TH",
+          )} บาท`
+        : emptyValue,
+
+    อาชีพผู้ปกครอง:
+      displayValue(
+        profile.parentOccupation,
+      ),
+
+    จำนวนพี่น้อง:
+      profile.siblings !== null
+        ? `${profile.siblings} คน`
+        : emptyValue,
+
+    ชื่อผู้ติดต่อ:
+      displayValue(
+        profile.emergencyContactName,
+      ),
+
+    ความสัมพันธ์:
+      displayValue(
+        profile.emergencyContactRelation,
+      ),
+
+    โทรศัพท์ฉุกเฉิน:
+      displayValue(
+        profile.emergencyContactPhone,
+      ),
+
+    อีเมลผู้ติดต่อ:
+      displayValue(
+        profile.emergencyContactEmail,
+      ),
+
+    ธนาคาร:
+      displayValue(
+        profile.bankName,
+      ),
+
+    เลขที่บัญชี:
+      displayValue(
+        profile.bankAccountNumber,
+      ),
+
+    ชื่อบัญชี:
+      displayValue(
+        profile.bankAccountName,
+      ),
+
+    ประเภทบัญชี:
+      displayValue(
+        profile.bankAccountType,
+      ),
+  };
+}
+
 export function Profile() {
-  const [data, setData] = useState(profileInitial),
-    [edit, setEdit] = useState(false),
-    [message, setMessage] = useState(""),
-    [upload, setUpload] = useState(false),
-    [preview, setPreview] = useState("");
+  const [data, setData] =
+    useState<
+      Record<string, string>
+    >(profileInitial);
+
+  const [
+    profile,
+    setProfile,
+  ] =
+    useState<StudentProfile | null>(
+      null,
+    );
+
+  const [edit, setEdit] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState("");
+
+  const [upload, setUpload] =
+    useState(false);
+
+  const [preview, setPreview] =
+    useState("");
+
+  const [saving, setSaving] =
+    useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadProfile() {
+      try {
+        const response =
+          await fetch(
+            "/api/profile",
+            {
+              cache:
+                "no-store",
+            },
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          cancelled ||
+          !response.ok ||
+          !result.success ||
+          !result.profile
+        ) {
+          return;
+        }
+
+        const loadedProfile =
+          result.profile as StudentProfile;
+
+        setProfile(
+          loadedProfile,
+        );
+
+        setData(
+          profileToDisplay(
+            loadedProfile,
+          ),
+        );
+      } catch (error) {
+        console.error(
+          "PROFILE_LOAD_ERROR:",
+          error,
+        );
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  async function saveProfile(
+    event:
+      FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+
+    setSaving(true);
+    setMessage("");
+
+    const formData =
+      new FormData(
+        event.currentTarget,
+      );
+
+    const payload = {
+      fullName:
+        formData.get(
+          "fullName",
+        ),
+
+      studentId:
+        formData.get(
+          "studentId",
+        ),
+
+      phoneNumber:
+        formData.get(
+          "phoneNumber",
+        ),
+
+      faculty:
+        formData.get(
+          "faculty",
+        ),
+
+      major:
+        formData.get(
+          "major",
+        ),
+
+      educationLevel:
+        formData.get(
+          "educationLevel",
+        ),
+
+      yearLevel:
+        formData.get(
+          "yearLevel",
+        ),
+
+      gpa:
+        formData.get("gpa"),
+
+      address:
+        formData.get(
+          "address",
+        ),
+
+      familyIncome:
+        formData.get(
+          "familyIncome",
+        ),
+
+      parentStatus:
+        formData.get(
+          "parentStatus",
+        ),
+
+      familyMembers:
+        formData.get(
+          "familyMembers",
+        ),
+
+      parentOccupation:
+        formData.get(
+          "parentOccupation",
+        ),
+
+      siblings:
+        formData.get(
+          "siblings",
+        ),
+
+      emergencyContactName:
+        formData.get(
+          "emergencyContactName",
+        ),
+
+      emergencyContactRelation:
+        formData.get(
+          "emergencyContactRelation",
+        ),
+
+      emergencyContactPhone:
+        formData.get(
+          "emergencyContactPhone",
+        ),
+
+      emergencyContactEmail:
+        formData.get(
+          "emergencyContactEmail",
+        ),
+
+      bankName:
+        formData.get(
+          "bankName",
+        ),
+
+      bankAccountNumber:
+        formData.get(
+          "bankAccountNumber",
+        ),
+
+      bankAccountName:
+        formData.get(
+          "bankAccountName",
+        ),
+
+      bankAccountType:
+        formData.get(
+          "bankAccountType",
+        ),
+    };
+
+    try {
+      const response =
+        await fetch(
+          "/api/profile",
+          {
+            method: "PUT",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body:
+              JSON.stringify(
+                payload,
+              ),
+          },
+        );
+
+      const result =
+        await response.json();
+
+      if (
+        !response.ok ||
+        !result.success
+      ) {
+        setMessage(
+          result.message ||
+            "ไม่สามารถบันทึกข้อมูลได้",
+        );
+
+        return;
+      }
+
+      const updatedProfile =
+        result.profile as StudentProfile;
+
+      setProfile(
+        updatedProfile,
+      );
+
+      setData(
+        profileToDisplay(
+          updatedProfile,
+        ),
+      );
+
+      setEdit(false);
+
+      setMessage(
+        "บันทึกข้อมูลโปรไฟล์เรียบร้อยแล้ว",
+      );
+    } catch (error) {
+      console.error(
+        "PROFILE_SAVE_ERROR:",
+        error,
+      );
+
+      setMessage(
+        "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
   const sections = [
     [
       "ข้อมูลการศึกษา",
@@ -143,6 +599,7 @@ export function Profile() {
       "ชั้นปี",
       "เกรดเฉลี่ย",
     ],
+
     [
       "ข้อมูลฐานะทางครอบครัว",
       "สถานภาพบิดามารดา",
@@ -151,6 +608,7 @@ export function Profile() {
       "อาชีพผู้ปกครอง",
       "จำนวนพี่น้อง",
     ],
+
     [
       "ข้อมูลติดต่อฉุกเฉิน",
       "ชื่อผู้ติดต่อ",
@@ -158,144 +616,583 @@ export function Profile() {
       "โทรศัพท์ฉุกเฉิน",
       "อีเมลผู้ติดต่อ",
     ],
-    ["ข้อมูลบัญชีธนาคาร", "ธนาคาร", "เลขที่บัญชี", "ชื่อบัญชี", "ประเภทบัญชี"],
+
+    [
+      "ข้อมูลบัญชีธนาคาร",
+      "ธนาคาร",
+      "เลขที่บัญชี",
+      "ชื่อบัญชี",
+      "ประเภทบัญชี",
+    ],
   ];
+
   return (
     <>
       <Heading
         title="โปรไฟล์และเอกสาร"
         description="จัดการข้อมูลส่วนตัว ข้อมูลประกอบการสมัครทุน และเอกสารสำคัญของคุณ"
       />
-      {message && <Notice>{message}</Notice>}
+
+      {message && (
+        <Notice>
+          {message}
+        </Notice>
+      )}
+
       <div className="columns">
         <Panel>
           <div className="profile-summary">
             <span className="avatar large" />
+
             <div>
-              <h1>{data["ชื่อ–นามสกุล"]}</h1>
-              <p>รหัสนักศึกษา 661234567</p>
-              <Badge>นักศึกษาปัจจุบัน</Badge>
+              <h1>
+                {
+                  data[
+                    "ชื่อ–นามสกุล"
+                  ]
+                }
+              </h1>
+
               <p>
-                {data["คณะ"]}　{data["สาขาวิชา"]}　{data["ชั้นปี"]}
+                รหัสนักศึกษา{" "}
+                {profile?.studentId ||
+                  emptyValue}
               </p>
+
+              <Badge>
+                นักศึกษาปัจจุบัน
+              </Badge>
+
               <p>
-                ✉ {data["อีเมล"]}　☎ {data["เบอร์โทรศัพท์"]}
+                {data["คณะ"]}　
+                {data["สาขาวิชา"]}　
+                {data["ชั้นปี"]}
               </p>
-              <p>{data["ที่อยู่"]}</p>
+
+              <p>
+                ✉ {data["อีเมล"]}　
+                ☎{" "}
+                {
+                  data[
+                    "เบอร์โทรศัพท์"
+                  ]
+                }
+              </p>
+
+              <p>
+                {data["ที่อยู่"]}
+              </p>
             </div>
-            <button className="btn secondary" onClick={() => setEdit(!edit)}>
-              <Icon name="edit" size={17} />
+
+            <button
+              className="btn secondary"
+              onClick={() =>
+                setEdit(!edit)
+              }
+            >
+              <Icon
+                name="edit"
+                size={17}
+              />
               แก้ไขข้อมูล
             </button>
           </div>
         </Panel>
+
         <Panel title="ความพร้อมในการสมัครทุน">
           <div className="chart-wrap">
             <div className="donut readiness">
               <div>
-                <strong>80%</strong>สมบูรณ์
+                <strong>
+                  80%
+                </strong>
+                สมบูรณ์
               </div>
             </div>
+
             <div>
               <p>
-                คุณกรอกข้อมูลครบแล้ว 4 จาก 5 ส่วน และอัปโหลดเอกสาร 4 จาก 5
-                รายการ
+                คุณกรอกข้อมูลครบแล้ว 4
+                จาก 5 ส่วน
+                และอัปโหลดเอกสาร 4
+                จาก 5 รายการ
               </p>
+
               <div className="soft-box">
                 ✓ ใกล้เสร็จแล้ว!
-                <small> ตรวจสอบเอกสารที่ยังไม่ผ่านการตรวจสอบ</small>
+                <small>
+                  {" "}
+                  ตรวจสอบเอกสารที่ยังไม่ผ่านการตรวจสอบ
+                </small>
               </div>
             </div>
           </div>
         </Panel>
       </div>
+
       {edit && (
-        <Panel title="แก้ไขข้อมูลโปรไฟล์" className="edit-profile">
+        <Panel
+          title="แก้ไขข้อมูลโปรไฟล์"
+          className="edit-profile"
+        >
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const values = Object.fromEntries(
-                new FormData(e.currentTarget),
-              ) as Record<string, string>;
-              setData({ ...data, ...values });
-              setEdit(false);
-              setMessage(
-                "บันทึกข้อมูลตัวอย่างในหน้านี้แล้ว ข้อมูลจะกลับเป็นค่าเริ่มต้นเมื่อรีเฟรช",
-              );
-            }}
+            onSubmit={
+              saveProfile
+            }
           >
             <div className="form-grid">
-              {Object.entries(data).map(([k, v]) => (
-                <label key={k}>
-                  {k}
-                  <input
-                    name={k}
-                    defaultValue={v}
-                    required
-                    type={k.includes("อีเมล") ? "email" : "text"}
-                  />
-                </label>
-              ))}
+              <label>
+                ชื่อ–นามสกุล
+                <input
+                  name="fullName"
+                  defaultValue={
+                    profile?.fullName ||
+                    ""
+                  }
+                  required
+                />
+              </label>
+
+              <label>
+  รหัสนักศึกษา
+  <input
+    name="studentId"
+    defaultValue={
+      profile?.studentId || ""
+    }
+    required
+    type="text"
+    inputMode="numeric"
+    pattern="[0-9]{8,12}"
+    maxLength={12}
+    onInput={(e) => {
+      e.currentTarget.value =
+        e.currentTarget.value.replace(
+          /\D/g,
+          "",
+        );
+    }}
+  />
+</label>
+
+              <label>
+                อีเมล
+                <input
+                  value={
+                    profile?.email ||
+                    ""
+                  }
+                  readOnly
+                  type="email"
+                />
+              </label>
+
+              <label>
+  เบอร์โทรศัพท์
+  <input
+    name="phoneNumber"
+    defaultValue={
+      profile?.phoneNumber || ""
+    }
+    type="text"
+    inputMode="numeric"
+    pattern="[0-9]{9,10}"
+    maxLength={10}
+    onInput={(e) => {
+      e.currentTarget.value =
+        e.currentTarget.value.replace(
+          /\D/g,
+          "",
+        );
+    }}
+  />
+</label>
+
+              <label>
+                คณะ
+                <input
+                  name="faculty"
+                  defaultValue={
+                    profile?.faculty ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                สาขาวิชา
+                <input
+                  name="major"
+                  defaultValue={
+                    profile?.major ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ระดับการศึกษา
+                <input
+                  name="educationLevel"
+                  defaultValue={
+                    profile?.educationLevel ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ชั้นปี
+                <input
+                  name="yearLevel"
+                  type="number"
+                  min="1"
+                  max="8"
+                  step="1"
+                  defaultValue={
+                    profile?.yearLevel ??
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                เกรดเฉลี่ย
+                <input
+                  name="gpa"
+                  type="number"
+                  min="0"
+                  max="4"
+                  step="0.01"
+                  defaultValue={
+                    profile?.gpa ??
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ที่อยู่
+                <input
+                  name="address"
+                  defaultValue={
+                    profile?.address ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                สถานภาพบิดามารดา
+                <input
+                  name="parentStatus"
+                  defaultValue={
+                    profile?.parentStatus ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                จำนวนสมาชิกในครอบครัว
+                <input
+                  name="familyMembers"
+                  type="number"
+                  min="0"
+                  step="1"
+                  defaultValue={
+                    profile?.familyMembers ??
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                รายได้ครอบครัวต่อปี
+                <input
+                  name="familyIncome"
+                  type="number"
+                  min="0"
+                  step="1"
+                  defaultValue={
+                    profile?.familyIncome ??
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                อาชีพผู้ปกครอง
+                <input
+                  name="parentOccupation"
+                  defaultValue={
+                    profile?.parentOccupation ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                จำนวนพี่น้อง
+                <input
+                  name="siblings"
+                  type="number"
+                  min="0"
+                  step="1"
+                  defaultValue={
+                    profile?.siblings ??
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ชื่อผู้ติดต่อฉุกเฉิน
+                <input
+                  name="emergencyContactName"
+                  defaultValue={
+                    profile?.emergencyContactName ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ความสัมพันธ์
+                <input
+                  name="emergencyContactRelation"
+                  defaultValue={
+                    profile?.emergencyContactRelation ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+  โทรศัพท์ฉุกเฉิน
+  <input
+    name="emergencyContactPhone"
+    defaultValue={
+      profile?.emergencyContactPhone ||
+      ""
+    }
+    type="text"
+    inputMode="numeric"
+    pattern="[0-9]{9,10}"
+    maxLength={10}
+    onInput={(e) => {
+      e.currentTarget.value =
+        e.currentTarget.value.replace(
+          /\D/g,
+          "",
+        );
+    }}
+  />
+</label>
+
+              <label>
+                อีเมลผู้ติดต่อ
+                <input
+                  name="emergencyContactEmail"
+                  type="email"
+                  defaultValue={
+                    profile?.emergencyContactEmail ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ธนาคาร
+                <input
+                  name="bankName"
+                  defaultValue={
+                    profile?.bankName ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+  เลขที่บัญชี
+  <input
+    name="bankAccountNumber"
+    defaultValue={
+      profile?.bankAccountNumber ||
+      ""
+    }
+    type="text"
+    inputMode="numeric"
+    onInput={(e) => {
+      e.currentTarget.value =
+        e.currentTarget.value.replace(
+          /\D/g,
+          "",
+        );
+    }}
+  />
+</label>
+
+              <label>
+                ชื่อบัญชี
+                <input
+                  name="bankAccountName"
+                  defaultValue={
+                    profile?.bankAccountName ||
+                    ""
+                  }
+                />
+              </label>
+
+              <label>
+                ประเภทบัญชี
+                <input
+                  name="bankAccountType"
+                  defaultValue={
+                    profile?.bankAccountType ||
+                    ""
+                  }
+                />
+              </label>
             </div>
+
             <div className="form-actions">
               <button
                 className="btn secondary"
                 type="button"
-                onClick={() => setEdit(false)}
+                onClick={() =>
+                  setEdit(false)
+                }
+                disabled={
+                  saving
+                }
               >
                 ยกเลิก
               </button>
-              <button className="btn">บันทึกข้อมูล</button>
+
+              <button
+                className="btn"
+                type="submit"
+                disabled={
+                  saving
+                }
+              >
+                {saving
+                  ? "กำลังบันทึก..."
+                  : "บันทึกข้อมูล"}
+              </button>
             </div>
           </form>
         </Panel>
       )}
+
       <div className="profile-grid">
-        {sections.map(([title, ...keys], i) => (
-          <Panel
-            key={title}
-            title={title}
-            action={
-              <button className="text-button" onClick={() => setEdit(true)}>
-                แก้ไข ›
-              </button>
-            }
-          >
-            <Icon name={["cap", "people", "user", "money"][i]} size={30} />
-            <dl>
-              {keys.map((k) => (
-                <div key={k}>
-                  <dt>{k}</dt>
-                  <dd>{data[k]}</dd>
-                </div>
-              ))}
-            </dl>
-          </Panel>
-        ))}
+        {sections.map(
+          (
+            [
+              title,
+              ...keys
+            ],
+            i,
+          ) => (
+            <Panel
+              key={title}
+              title={title}
+              action={
+                <button
+                  className="text-button"
+                  onClick={() =>
+                    setEdit(true)
+                  }
+                >
+                  แก้ไข ›
+                </button>
+              }
+            >
+              <Icon
+                name={
+                  [
+                    "cap",
+                    "people",
+                    "user",
+                    "money",
+                  ][i]
+                }
+                size={30}
+              />
+
+              <dl>
+                {keys.map(
+                  (key) => (
+                    <div
+                      key={
+                        key
+                      }
+                    >
+                      <dt>
+                        {key}
+                      </dt>
+
+                      <dd>
+                        {
+                          data[
+                            key
+                          ]
+                        }
+                      </dd>
+                    </div>
+                  ),
+                )}
+              </dl>
+            </Panel>
+          ),
+        )}
       </div>
+
       <Panel
         title="เอกสารประกอบการสมัครทุน"
         action={
-          <button className="btn" onClick={() => setUpload(!upload)}>
+          <button
+            className="btn"
+            onClick={() =>
+              setUpload(
+                !upload,
+              )
+            }
+          >
             <Icon name="upload" />
             อัปโหลดเอกสารใหม่
           </button>
         }
       >
         <div id="documents">
-          {upload && <FilePicker />}
+          {upload && (
+            <FilePicker />
+          )}
+
           <div className="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>ชื่อเอกสาร</th>
-                  <th>ประเภทเอกสาร</th>
-                  <th>วันที่อัปโหลด</th>
-                  <th>สถานะการตรวจสอบ</th>
-                  <th>จัดการ</th>
+                  <th>
+                    ชื่อเอกสาร
+                  </th>
+                  <th>
+                    ประเภทเอกสาร
+                  </th>
+                  <th>
+                    วันที่อัปโหลด
+                  </th>
+                  <th>
+                    สถานะการตรวจสอบ
+                  </th>
+                  <th>
+                    จัดการ
+                  </th>
                 </tr>
               </thead>
+
               <tbody>
                 {[
                   "Transcript.pdf",
@@ -303,54 +1200,95 @@ export function Profile() {
                   "หนังสือรับรองรายได้.pdf",
                   "Portfolio.pdf",
                   "เกียรติบัตร.jpg",
-                ].map((f, i) => (
-                  <tr key={f}>
-                    <td>{i + 1}</td>
-                    <td>▤　{f}</td>
-                    <td>
-                      {
-                        [
-                          "ใบแสดงผลการศึกษา",
-                          "เอกสารยืนยันตัวตน",
-                          "เอกสารรับรองรายได้",
-                          "แฟ้มสะสมผลงาน",
-                          "เอกสารประกอบอื่น ๆ",
-                        ][i]
+                ].map(
+                  (file, i) => (
+                    <tr
+                      key={
+                        file
                       }
-                    </td>
-                    <td>{12 - i * 2} ม.ค. 2568</td>
-                    <td>
-                      <Badge>
-                        {i === 4
-                          ? "ไม่ผ่านการตรวจสอบ"
-                          : i === 2
-                            ? "อยู่ระหว่างพิจารณา"
-                            : "ผ่านการตรวจสอบ"}
-                      </Badge>
-                    </td>
-                    <td>
-                      <button
-                        className="btn secondary"
-                        onClick={() => setPreview(f)}
-                      >
-                        ดูเอกสาร
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                    >
+                      <td>
+                        {i +
+                          1}
+                      </td>
+
+                      <td>
+                        ▤{" "}
+                        {file}
+                      </td>
+
+                      <td>
+                        {
+                          [
+                            "ใบแสดงผลการศึกษา",
+                            "เอกสารยืนยันตัวตน",
+                            "เอกสารรับรองรายได้",
+                            "แฟ้มสะสมผลงาน",
+                            "เอกสารประกอบอื่น ๆ",
+                          ][i]
+                        }
+                      </td>
+
+                      <td>
+                        {12 -
+                          i *
+                            2}{" "}
+                        ม.ค.
+                        2568
+                      </td>
+
+                      <td>
+                        <Badge>
+                          {i ===
+                          4
+                            ? "ไม่ผ่านการตรวจสอบ"
+                            : i ===
+                                2
+                              ? "อยู่ระหว่างพิจารณา"
+                              : "ผ่านการตรวจสอบ"}
+                        </Badge>
+                      </td>
+
+                      <td>
+                        <button
+                          className="btn secondary"
+                          onClick={() =>
+                            setPreview(
+                              file,
+                            )
+                          }
+                        >
+                          ดูเอกสาร
+                        </button>
+                      </td>
+                    </tr>
+                  ),
+                )}
               </tbody>
             </table>
           </div>
+
           {preview && (
             <Notice>
-              {preview} เป็นชื่อเอกสารในภาพตัวอย่าง ยังไม่มีไฟล์ต้นฉบับแนบมา{" "}
-              <button className="text-button" onClick={() => setPreview("")}>
+              {preview}{" "}
+              เป็นชื่อเอกสารในภาพตัวอย่าง
+              ยังไม่มีไฟล์ต้นฉบับแนบมา{" "}
+              <button
+                className="text-button"
+                onClick={() =>
+                  setPreview(
+                    "",
+                  )
+                }
+              >
                 ปิด
               </button>
             </Notice>
           )}
+
           <div className="error-note">
-            กรุณาแก้ไขเอกสารที่ยังไม่ผ่านการตรวจสอบ โดยอัปโหลดเอกสารอีกครั้ง
+            กรุณาแก้ไขเอกสารที่ยังไม่ผ่านการตรวจสอบ
+            โดยอัปโหลดเอกสารอีกครั้ง
           </div>
         </div>
       </Panel>

@@ -14,6 +14,9 @@ export type SessionUser = {
   email: string;
   fullName: string;
   studentId: string;
+  faculty: string | null;
+  gpa: number | null;
+  familyIncome: number | null;
   role: string;
 };
 
@@ -112,6 +115,15 @@ export async function resolveSessionUser(
       studentProfile?.student_code ||
       authUser.user_metadata?.student_id ||
       "",
+
+    faculty:
+      studentProfile?.faculty ?? null,
+
+    gpa:
+      studentProfile?.gpa ?? null,
+
+    familyIncome:
+      studentProfile?.family_income ?? null,
 
     role,
   };
