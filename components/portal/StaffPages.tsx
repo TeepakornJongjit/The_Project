@@ -138,11 +138,9 @@ type ManagedScholarship = {
   description: string;
 };
 
-const DEFAULT_TITLE =
-  "ทุนส่งเสริมนักศึกษาดีเด่น ประจำปีการศึกษา 2568";
+const DEFAULT_TITLE = "";
 
-const DEFAULT_DESCRIPTION =
-  "เพื่อส่งเสริมนักศึกษาที่มีผลการเรียนดี มีความประพฤติดี และมีส่วนร่วมในการทำกิจกรรมเพื่อสังคมของมหาวิทยาลัย";
+const DEFAULT_DESCRIPTION = "";
 
 const DEFAULT_FACULTY = "ทุกคณะ / ทุกสาขาวิชา";
 
@@ -157,13 +155,13 @@ export function ManageScholarships() {
     scholarships[0]?.type ?? "",
   );
 
-  const [amount, setAmount] = useState("10000");
-  const [quota, setQuota] = useState("20");
+  const [amount, setAmount] = useState("");
+  const [quota, setQuota] = useState("");
 
   const [faculty, setFaculty] = useState(DEFAULT_FACULTY);
 
-  const [openDate, setOpenDate] = useState("2025-04-01");
-  const [closeDate, setCloseDate] = useState("2025-04-30");
+  const [openDate, setOpenDate] = useState("");
+  const [closeDate, setCloseDate] = useState("");
 
   const [description, setDescription] = useState(DEFAULT_DESCRIPTION);
 
@@ -183,20 +181,10 @@ export function ManageScholarships() {
 
   const [published, setPublished] = useState(false);
 
-  /*
-    editingId === null
-    = กำลังสร้างทุนใหม่
-
-    editingId มีค่า
-    = กำลังแก้ไขทุน
-  */
   const [editingId, setEditingId] = useState<string | null>(null);
 
   /* -------------------------------------------------------
      SCHOLARSHIP LIST
-
-     ตอนนี้เป็นข้อมูลในหน้าเว็บก่อน
-     ยังไม่ได้ต่อ Supabase
   ------------------------------------------------------- */
 
   const [managedScholarships, setManagedScholarships] = useState<
@@ -204,7 +192,7 @@ export function ManageScholarships() {
   >([
     {
       id: "SCH-001",
-      title: DEFAULT_TITLE,
+      title: "ทุนส่งเสริมนักศึกษาดีเด่น ประจำปีการศึกษา 2568",
       type: scholarships[0]?.type ?? "ทุนเรียนดี",
       amount: "10000",
       quota: "20",
@@ -250,15 +238,13 @@ export function ManageScholarships() {
 
     setScholarshipType(scholarships[0]?.type ?? "");
 
-    setAmount("10000");
-
-    setQuota("20");
+    setAmount("");
+    setQuota("");
 
     setFaculty(DEFAULT_FACULTY);
 
-    setOpenDate("2025-04-01");
-
-    setCloseDate("2025-04-30");
+    setOpenDate("");
+    setCloseDate("");
 
     setDescription(DEFAULT_DESCRIPTION);
 
@@ -294,27 +280,21 @@ export function ManageScholarships() {
       return;
     }
 
-    /*
-      =====================================================
-      EDIT
-      =====================================================
-    */
-
     if (editingId) {
       setManagedScholarships((current) =>
         current.map((item) =>
           item.id === editingId
             ? {
-                ...item,
-                title,
-                type: scholarshipType,
-                amount,
-                quota,
-                faculty,
-                openDate,
-                closeDate,
-                description,
-              }
+              ...item,
+              title,
+              type: scholarshipType,
+              amount,
+              quota,
+              faculty,
+              openDate,
+              closeDate,
+              description,
+            }
             : item,
         ),
       );
@@ -327,12 +307,6 @@ export function ManageScholarships() {
 
       return;
     }
-
-    /*
-      =====================================================
-      CREATE
-      =====================================================
-    */
 
     const newScholarship: ManagedScholarship = {
       id: `SCH-${Date.now()}`,
@@ -406,11 +380,6 @@ export function ManageScholarships() {
       current.filter((x) => x.id !== item.id),
     );
 
-    /*
-      ถ้ากำลังแก้ทุนตัวที่ถูกลบ
-      ให้ล้างฟอร์มด้วย
-    */
-
     if (editingId === item.id) {
       setEditingId(null);
 
@@ -418,15 +387,13 @@ export function ManageScholarships() {
 
       setScholarshipType(scholarships[0]?.type ?? "");
 
-      setAmount("10000");
-
-      setQuota("20");
+      setAmount("");
+      setQuota("");
 
       setFaculty(DEFAULT_FACULTY);
 
-      setOpenDate("2025-04-01");
-
-      setCloseDate("2025-04-30");
+      setOpenDate("");
+      setCloseDate("");
 
       setDescription(DEFAULT_DESCRIPTION);
     }
@@ -491,10 +458,6 @@ export function ManageScholarships() {
 
       {message && <Notice>{message}</Notice>}
 
-      {/* ===================================================
-          FORM
-      =================================================== */}
-
       <form onSubmit={submit}>
         <Panel
           title={
@@ -521,6 +484,7 @@ export function ManageScholarships() {
                   onChange={(e) =>
                     setTitle(e.target.value)
                   }
+                  placeholder="ระบุชื่อทุน"
                   required
                 />
               </label>
@@ -555,6 +519,7 @@ export function ManageScholarships() {
                     onChange={(e) =>
                       setAmount(e.target.value)
                     }
+                    placeholder="ระบุจำนวนเงินต่อคน"
                     required
                   />
                 </label>
@@ -570,19 +535,21 @@ export function ManageScholarships() {
                     onChange={(e) =>
                       setQuota(e.target.value)
                     }
+                    placeholder="ระบุจำนวนทุน"
                     required
                   />
                 </label>
               </div>
 
               <label>
-                คณะ / สาขาที่สมัครได้
+                คณะ / สาขาที่สมัครได้ <b>*</b>
 
                 <select
                   value={faculty}
                   onChange={(e) =>
                     setFaculty(e.target.value)
                   }
+                  required
                 >
                   <option>
                     ทุกคณะ / ทุกสาขาวิชา
@@ -694,16 +661,13 @@ export function ManageScholarships() {
                   onChange={(e) =>
                     setDescription(e.target.value)
                   }
+                  placeholder="ระบุรายละเอียดทุน"
                 />
               </label>
 
               <FilePicker />
             </div>
           </div>
-
-          {/* =================================================
-              FORM BUTTON
-          ================================================= */}
 
           <div className="form-actions">
             <button
@@ -745,10 +709,6 @@ export function ManageScholarships() {
             </button>
           </div>
 
-          {/* =================================================
-              PREVIEW
-          ================================================= */}
-
           {preview && (
             <div className="announcement-preview">
               <h2>
@@ -789,8 +749,6 @@ export function ManageScholarships() {
               สามารถแก้ไขหรือลบข้อมูลทุนได้จากรายการนี้
             </p>
           </div>
-
-          
         </div>
 
         {managedScholarships.length > 0 ? (
@@ -809,70 +767,53 @@ export function ManageScholarships() {
               </thead>
 
               <tbody>
-                {managedScholarships.map(
-                  (item) => (
-                    <tr key={item.id}>
-                      <td>
-                        <strong>
-                          {item.title}
-                        </strong>
+                {managedScholarships.map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <strong>{item.title}</strong>
 
-                        <br />
+                      <br />
 
-                        <small>
-                          {item.faculty}
-                        </small>
-                      </td>
+                      <small>{item.faculty}</small>
+                    </td>
 
-                      <td>{item.type}</td>
+                    <td>{item.type}</td>
 
-                      <td>
-                        {Number(
-                          item.amount,
-                        ).toLocaleString()}{" "}
-                        บาท
-                      </td>
+                    <td>
+                      {Number(item.amount).toLocaleString()} บาท
+                    </td>
 
-                      <td>
-                        {item.quota} ทุน
-                      </td>
+                    <td>{item.quota} ทุน</td>
 
-                      <td>
-                        {item.openDate}
-                      </td>
+                    <td>{item.openDate}</td>
 
-                      <td>
-                        {item.closeDate}
-                      </td>
+                    <td>{item.closeDate}</td>
 
-                      <td>
-                        <div className="button-row">
-                          <button
-                            type="button"
-                            className="btn secondary"
-                            onClick={() =>
-                              startEdit(item)
-                            }
-                          >
-                            แก้ไข
-                          </button>
+                    <td>
+                      <div className="button-row">
+                        <button
+                          type="button"
+                          className="btn secondary"
+                          onClick={() =>
+                            startEdit(item)
+                          }
+                        >
+                          แก้ไข
+                        </button>
 
-                          <button
-                            type="button"
-                            className="btn secondary"
-                            onClick={() =>
-                              deleteScholarship(
-                                item,
-                              )
-                            }
-                          >
-                            ลบ
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ),
-                )}
+                        <button
+                          type="button"
+                          className="btn secondary"
+                          onClick={() =>
+                            deleteScholarship(item)
+                          }
+                        >
+                          ลบ
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -896,9 +837,7 @@ export function ManageScholarships() {
           ].map((t, i) => (
             <button
               key={t}
-              className={
-                tab === i ? "active" : ""
-              }
+              className={tab === i ? "active" : ""}
               onClick={() => setTab(i)}
             >
               {t}
@@ -931,11 +870,7 @@ export function ManageScholarships() {
                   onClick={exportCsv}
                   type="button"
                 >
-                  <Icon
-                    name="upload"
-                    size={18}
-                  />
-
+                  <Icon name="upload" size={18} />
                   ส่งออกข้อมูล
                 </button>
               </div>
@@ -954,84 +889,58 @@ export function ManageScholarships() {
                       "สถานะการเบิกจ่าย",
                       "จัดการ",
                     ].map((x) => (
-                      <th key={x}>
-                        {x}
-                      </th>
+                      <th key={x}>{x}</th>
                     ))}
                   </tr>
                 </thead>
 
                 <tbody>
-                  {filtered.map(
-                    ({ name, i }) => (
-                      <tr key={name}>
-                        <td>{i + 1}</td>
+                  {filtered.map(({ name, i }) => (
+                    <tr key={name}>
+                      <td>{i + 1}</td>
 
-                        <td>
-                          {661234567 + i}
-                        </td>
+                      <td>{661234567 + i}</td>
 
-                        <td>{name}</td>
+                      <td>{name}</td>
 
-                        <td>
-                          คณะวิทยาศาสตร์
-                          <br />
-                          วิทยาการคอมพิวเตอร์
-                        </td>
+                      <td>
+                        คณะวิทยาศาสตร์
+                        <br />
+                        วิทยาการคอมพิวเตอร์
+                      </td>
 
-                        <td>
-                          {Number(
-                            amount,
-                          ).toLocaleString()}
-                        </td>
+                      <td>
+                        {Number(amount).toLocaleString()}
+                      </td>
 
-                        <td>
-                          <Badge>
-                            {
-                              recipientStates[
-                                i
-                              ]
-                            }
-                          </Badge>
-                        </td>
+                      <td>
+                        <Badge>
+                          {recipientStates[i]}
+                        </Badge>
+                      </td>
 
-                        <td>
-                          <select
-                            aria-label={`สถานะการเบิกจ่ายของ ${name}`}
-                            value={
-                              recipientStates[
-                                i
-                              ]
-                            }
-                            onChange={(e) =>
-                              setRecipientStates(
-                                recipientStates.map(
-                                  (s, j) =>
-                                    j === i
-                                      ? e
-                                          .target
-                                          .value
-                                      : s,
-                                ),
-                              )
-                            }
-                          >
-                            <option>
-                              จ่ายแล้ว
-                            </option>
-
-                            <option>
-                              รอเบิกจ่าย
-                            </option>
-
-                            <option>
-                              รอดำเนินการ
-                            </option>
-                          </select>
-                        </td>
-                      </tr>
-                    ),
-                  )}
+                      <td>
+                        <select
+                          aria-label={`สถานะการเบิกจ่ายของ ${name}`}
+                          value={recipientStates[i]}
+                          onChange={(e) =>
+                            setRecipientStates(
+                              recipientStates.map(
+                                (s, j) =>
+                                  j === i
+                                    ? e.target.value
+                                    : s,
+                              ),
+                            )
+                          }
+                        >
+                          <option>จ่ายแล้ว</option>
+                          <option>รอเบิกจ่าย</option>
+                          <option>รอดำเนินการ</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
 
@@ -1044,8 +953,7 @@ export function ManageScholarships() {
 
             <div className="form-actions">
               <span>
-                แสดง {filtered.length} รายการ ·
-                ข้อมูลตัวอย่าง
+                แสดง {filtered.length} รายการ · ข้อมูลตัวอย่าง
               </span>
 
               <button
@@ -1193,7 +1101,7 @@ function ApplicationHeader({
           </h2>
 
           <p>
-            ประจำปีการศึกษา 2568　|　
+            ประจำปีการศึกษา 2568　|
             เฉพาะนักศึกษาภายในมหาวิทยาลัย
           </p>
         </span>
@@ -1215,7 +1123,7 @@ function ApplicationHeader({
           </h2>
 
           <p>
-            วันที่สมัคร 9 เม.ย. 2568　
+            วันที่สมัคร 9 เม.ย. 2568
             10:24 น.
           </p>
         </span>
@@ -1358,7 +1266,7 @@ export function Review({
                                 aria-label={`สถานะ ${d}`}
                                 value={
                                   docStates[
-                                    i
+                                  i
                                   ]
                                 }
                                 onChange={(
@@ -1371,10 +1279,10 @@ export function Review({
                                         j,
                                       ) =>
                                         j ===
-                                        i
+                                          i
                                           ? e
-                                              .target
-                                              .value
+                                            .target
+                                            .value
                                           : s,
                                     ),
                                   )
@@ -1519,9 +1427,9 @@ export function Review({
                 aria-label="เหตุผลผลการตรวจสอบ"
                 required={
                   decision ===
-                    "ส่งกลับแก้ไข" ||
+                  "ส่งกลับแก้ไข" ||
                   decision ===
-                    "ไม่อนุมัติ"
+                  "ไม่อนุมัติ"
                 }
                 placeholder="ระบุเหตุผลเพิ่มเติม (จำเป็นเมื่อส่งกลับแก้ไขหรือไม่อนุมัติ)"
               />
@@ -1557,7 +1465,7 @@ export function Review({
           <Applicant
             name={
               people[
-                applicant
+              applicant
               ] || people[0]
             }
           />
@@ -1734,7 +1642,7 @@ export function Evaluation() {
                             required
                             value={
                               scores[
-                                i
+                              i
                               ]
                             }
                             onChange={(
@@ -1747,10 +1655,10 @@ export function Evaluation() {
                                     j,
                                   ) =>
                                     j ===
-                                    i
+                                      i
                                       ? e
-                                          .target
-                                          .value
+                                        .target
+                                        .value
                                       : x,
                                 ),
                               )
