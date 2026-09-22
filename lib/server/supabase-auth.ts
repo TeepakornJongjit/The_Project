@@ -284,3 +284,43 @@ export async function signUpStudent(input: {
 
   return data;
 }
+
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+export async function requestPasswordReset(
+  email: string,
+  redirectTo: string,
+) {
+  checkEnvironment();
+
+  const response = await fetch(
+    `${SUPABASE_URL}/auth/v1/recover?redirect_to=${encodeURIComponent(
+      redirectTo,
+    )}`,
+    {
+      method: "POST",
+      headers: publicHeaders(),
+      body: JSON.stringify({
+        email,
+      }),
+      cache: "no-store",
+    },
+  );
+
+  const data = await response
+    .json()
+    .catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(
+      data?.msg ||
+        data?.message ||
+        data?.error_description ||
+        "ไม่สามารถส่งอีเมลรีเซ็ตรหัสผ่านได้",
+    );
+  }
+
+  return data;
+}

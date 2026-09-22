@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { scholarships, type Scholarship, money, demoDate } from "@/lib/ui-data";
 import {
   Action,
@@ -18,10 +18,70 @@ import {
   Timeline,
 } from "./Shared";
 
+type SessionUser = {
+  id: string;
+  email: string;
+  fullName: string;
+  studentId: string;
+  role: string;
+};
+
 export function Dashboard() {
+  const [sessionUser, setSessionUser] =
+    useState<SessionUser | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadSessionUser() {
+      try {
+        const response = await fetch(
+          "/api/auth/me",
+          {
+            cache: "no-store",
+          },
+        );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data =
+          await response.json();
+
+        if (
+          !cancelled &&
+          data.authenticated &&
+          data.user
+        ) {
+          setSessionUser(data.user);
+        }
+      } catch (error) {
+        console.error(
+          "DASHBOARD_SESSION_ERROR:",
+          error,
+        );
+      }
+    }
+
+    loadSessionUser();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const displayName =
+    sessionUser?.fullName &&
+    sessionUser.fullName !==
+      sessionUser.email
+      ? sessionUser.fullName
+      : sessionUser?.email ||
+        "นักศึกษา";
+
   return (
     <>
-      <Banner />
+      <Banner title={displayName} />
       <Stats />
       <div className="columns">
         <div className="stack">
